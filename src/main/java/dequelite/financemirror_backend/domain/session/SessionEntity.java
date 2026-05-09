@@ -20,7 +20,7 @@ public class SessionEntity {
     @Column(nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @OneToOne(mappedBy = "session")
+    @OneToOne(mappedBy = "session", cascade = CascadeType.ALL)
     private UserEntity user;
 
     @Column(name = "refresh_token", nullable = false, unique = false, updatable = true)

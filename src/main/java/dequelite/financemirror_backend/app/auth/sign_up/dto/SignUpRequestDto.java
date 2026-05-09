@@ -16,5 +16,5 @@ public class SignUpRequestDto {
     private String password;
 
     @NotBlank(message = "Salary is required")
-    private Integer phoneNumber;
+    private Integer salary;
 }
