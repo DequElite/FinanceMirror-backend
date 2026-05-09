@@ -1,0 +1,42 @@
+package dequelite.financemirror_backend.domain.user;
+
+import dequelite.financemirror_backend.domain.profile.ProfileEntity;
+import dequelite.financemirror_backend.domain.session.SessionEntity;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "app_user")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(nullable = false, unique = true, updatable = false)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = false)
+    private String password;
+
+    @Column(name = "created_at", nullable = false, updatable = false, unique = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    private ProfileEntity profile;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id")
+    private SessionEntity session;
+}
