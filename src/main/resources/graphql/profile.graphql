@@ -1,0 +1,29 @@
+type Spending {
+    id: ID
+    date: String
+    price: Int
+    category: String
+    description: String
+}
+
+type Report {
+    id: ID
+    weekly_spending: Int
+    expensive_category: String
+    remains: String
+    expenditure_rate: String
+    leak_problem: String
+    advice: String
+}
+
+type Profile {
+    id: ID
+    email: String
+    month_salary: String
+    spendings: [Spending]
+    reports: [Report]
+}
+
+type Query {
+    profile: Profile
+}
