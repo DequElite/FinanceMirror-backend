@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthFilter extends OncePerRequestFilter {
 
     @Value("${jwt.secret.session}")
@@ -32,21 +34,70 @@ public class AuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        String authHeader = request.getHeader("auth");
+        log.info("=== FILTER START ===");
+
+        String authHeader = request.getHeader("Authorization");
+
+        log.info("HEADER: {}", authHeader);
 
         try {
+
+            if(authHeader == null) {
+
+                log.info("HEADER NULL");
+
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            if(!authHeader.startsWith("Bearer ")) {
+
+                log.info("HEADER NOT BEARER");
+
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             String token = authHeader.substring(7);
 
-            TokenHeaderDTO user = authProcessor.validateToken(token, accessTokenSecret);
+            log.info("TOKEN: {}", token);
+
+            TokenHeaderDTO user =
+                    authProcessor.validateToken(
+                            token,
+                            accessTokenSecret
+                    );
+
+            log.info("USER: {}", user);
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(user, null, List.of());
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            null,
+                            List.of()
+                    );
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.info("AUTH CREATED");
+
+            SecurityContextHolder
+                    .getContext()
+                    .setAuthentication(authentication);
+
+            log.info(
+                    "SECURITY CONTEXT: {}",
+                    SecurityContextHolder
+                            .getContext()
+                            .getAuthentication()
+            );
 
         } catch (Exception e) {
+
+            log.error("FILTER ERROR", e);
+
             SecurityContextHolder.clearContext();
         }
+
+        log.info("=== FILTER END ===");
 
         filterChain.doFilter(request, response);
     }

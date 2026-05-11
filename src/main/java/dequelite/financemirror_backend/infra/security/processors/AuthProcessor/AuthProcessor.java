@@ -2,6 +2,7 @@ package dequelite.financemirror_backend.infra.security.processors.AuthProcessor;
 
 import dequelite.financemirror_backend.app.common.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,26 +11,36 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthProcessor {
     private final JwtService jwtService;
 
-    public TokenHeaderDTO validateToken(String authHeader, String accessTokenSecret) {
-        String[] authHeaderPats = authHeader.split(" ");
-        if(!authHeaderPats[0].equals("Bearer")) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
-        }
+    public TokenHeaderDTO validateToken(
+            String token,
+            String accessTokenSecret
+    ) {
 
-        String token = authHeaderPats[1];
         if(token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "UNAUTHORIZED");
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "UNAUTHORIZED"
+            );
         }
 
         Map<String, Object> decodedToken;
+
         try {
-            decodedToken = this.jwtService.verifyToken(token, accessTokenSecret);
+            decodedToken =
+                    this.jwtService.verifyToken(token, accessTokenSecret);
+
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "REFRESH_TOKEN_UNVALID");
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "TOKEN_INVALID"
+            );
         }
+
+        log.info("dds: {}", decodedToken);
 
         return TokenHeaderDTO.builder()
                 .jti(decodedToken.get("jti").toString())
