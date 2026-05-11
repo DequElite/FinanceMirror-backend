@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.domain.report;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.spending.CategoryEnum;
 import jakarta.persistence.*;
@@ -23,6 +24,7 @@ public class ReportEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
+    @JsonBackReference
     private ProfileEntity profile;
 
     @Column(name = "weekly_spending", unique = false, nullable = false, updatable = false)

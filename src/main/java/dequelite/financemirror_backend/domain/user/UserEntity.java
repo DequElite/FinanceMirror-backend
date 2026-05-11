@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.session.SessionEntity;
 import jakarta.persistence.*;
@@ -34,9 +35,11 @@ public class UserEntity {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
+    @JsonManagedReference
     private ProfileEntity profile;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id")
+    @JsonManagedReference
     private SessionEntity session;
 }

@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.auth.sign_up.dto;
 
+import dequelite.financemirror_backend.domain.dto.UserDto;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,5 +15,5 @@ public class SignUpServiceResponseDto {
     private String accessToken;
     private String refreshToken;
     private LocalDateTime refreshTokenExpiration;
-    private UserEntity user;
+    private UserDto user;
 }

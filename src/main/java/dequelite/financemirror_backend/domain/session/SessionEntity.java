@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.domain.session;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +22,7 @@ public class SessionEntity {
     private UUID id;
 
     @OneToOne(mappedBy = "session", cascade = CascadeType.ALL)
+    @JsonBackReference
     private UserEntity user;
 
     @Column(name = "refresh_token", nullable = false, unique = false, updatable = true)

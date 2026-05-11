@@ -2,6 +2,7 @@ package dequelite.financemirror_backend.app.auth.log_in;
 
 import dequelite.financemirror_backend.app.auth.log_in.dto.LogInRequestDto;
 import dequelite.financemirror_backend.app.auth.log_in.dto.LogInServiceResponseDto;
+import dequelite.financemirror_backend.app.common.mapper.EntityMapper;
 import dequelite.financemirror_backend.app.common.session.SessionService;
 import dequelite.financemirror_backend.app.common.token_pair.TokenGenerationService;
 import dequelite.financemirror_backend.app.common.token_pair.dto.TokenPairDto;
@@ -31,7 +32,7 @@ public class LogInService {
                 .accessToken(tokenPairDto.getAccessToken())
                 .refreshToken(tokenPairDto.getRefreshToken())
                 .refreshTokenExpiration(tokenPairDto.getRefreshTokenExpiration())
-                .user(user)
+                .user(EntityMapper.toUserDto(user))
                 .build();
     }
 }

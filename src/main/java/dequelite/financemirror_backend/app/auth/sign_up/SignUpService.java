@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.auth.sign_up;
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpRequestDto;
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpServiceResponseDto;
 import dequelite.financemirror_backend.app.common.jwt.JwtService;
+import dequelite.financemirror_backend.app.common.mapper.EntityMapper;
 import dequelite.financemirror_backend.app.common.session.SessionService;
 import dequelite.financemirror_backend.app.common.token_pair.TokenGenerationService;
 import dequelite.financemirror_backend.app.common.token_pair.dto.TokenPairDto;
@@ -39,7 +40,7 @@ public class SignUpService {
                 .refreshToken(tokenPairDto.getRefreshToken())
                 .accessToken(tokenPairDto.getAccessToken())
                 .refreshTokenExpiration(tokenPairDto.getRefreshTokenExpiration())
-                .user(user)
+                .user(EntityMapper.toUserDto(user))
                 .build();
     }
 
