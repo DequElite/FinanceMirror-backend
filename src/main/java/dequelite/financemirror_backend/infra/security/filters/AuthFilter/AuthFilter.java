@@ -19,31 +19,34 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
+
     @Value("${jwt.secret.session}")
     private String accessTokenSecret;
 
     private final AuthProcessor authProcessor;
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
-        return path.startsWith("/auth")
-                || path.startsWith("/swagger-ui")
-                || path.startsWith("/v3/api-docs")
-                || path.startsWith("/swagger-resources")
-                || path.startsWith("/webjars");
-    }
+        String authHeader = request.getHeader("auth");
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String[] authHeaderPats = request.getHeader("auth").split(" ");
+        try {
+            String token = authHeader.substring(7);
 
-        TokenHeaderDTO tokenHeaderDTO = this.authProcessor.validateToken(authHeaderPats[1], accessTokenSecret);
+            TokenHeaderDTO user = authProcessor.validateToken(token, accessTokenSecret);
 
-        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(tokenHeaderDTO, null, List.of());
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(user, null, List.of());
 
-        SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
+        }
 
         filterChain.doFilter(request, response);
     }

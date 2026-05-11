@@ -39,6 +39,7 @@ public class SignUpService {
                 .refreshToken(tokenPairDto.getRefreshToken())
                 .accessToken(tokenPairDto.getAccessToken())
                 .refreshTokenExpiration(tokenPairDto.getRefreshTokenExpiration())
+                .user(user)
                 .build();
     }
 
