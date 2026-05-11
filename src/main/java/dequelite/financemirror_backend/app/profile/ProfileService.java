@@ -21,7 +21,7 @@ public class ProfileService {
     private final ProfileMapper mapper;
 
     public ProfileGraphDto getProfile(UUID userId) {
-        Optional<ProfileEntity> profile = this.profileRepository.findByUserId(userId);
+        Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(userId);
         if(profile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
