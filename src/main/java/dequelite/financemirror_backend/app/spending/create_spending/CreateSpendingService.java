@@ -9,6 +9,7 @@ import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import dequelite.financemirror_backend.domain.user.UserRepository;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreateSpendingService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
@@ -26,6 +28,7 @@ public class CreateSpendingService {
             CreateSpendingRequestDto body,
             TokenHeaderDTO user
     ) {
+        log.info("SERVICE createSpending --START: {}", user);
         Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(UUID.fromString(user.getSub()));
         if(profile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -50,6 +53,13 @@ public class CreateSpendingService {
                 .category(category)
                 .build();
 
-        this.spendingRepository.save(newSpending);
+        try {
+            this.spendingRepository.save(newSpending);
+        } catch (Exception e) {
+            log.error("SAVE ERROR", e);
+            throw e;
+        }
+
+        log.info("SERVICE createSpending --end: {}", newSpending);
      }
 }

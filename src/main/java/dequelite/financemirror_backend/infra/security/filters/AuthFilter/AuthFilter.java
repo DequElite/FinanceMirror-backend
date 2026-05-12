@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -71,10 +72,10 @@ public class AuthFilter extends OncePerRequestFilter {
             log.info("USER: {}", user);
 
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
+                    UsernamePasswordAuthenticationToken.authenticated(
                             user,
                             null,
-                            List.of()
+                            List.of(new SimpleGrantedAuthority("ROLE_USER"))
                     );
 
             log.info("AUTH CREATED");
