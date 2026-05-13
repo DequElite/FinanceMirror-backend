@@ -1,8 +1,8 @@
 package dequelite.financemirror_backend.app.profile;
 
 import dequelite.financemirror_backend.app.profile.dto.ProfileGraphDto;
-import dequelite.financemirror_backend.app.profile.dto.ReportGraphDto;
-import dequelite.financemirror_backend.app.profile.dto.SpendingGraphDto;
+import dequelite.financemirror_backend.domain.dto.ReportDto;
+import dequelite.financemirror_backend.domain.dto.SpendingDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
@@ -25,30 +25,30 @@ public class ProfileMapper {
         return dto;
     }
 
-    private static List<SpendingGraphDto> mapSpendings(List<SpendingEntity> spendings) {
+    private static List<SpendingDto> mapSpendings(List<SpendingEntity> spendings) {
         return spendings.stream()
                 .map(ProfileMapper::toSpendingDto)
                 .toList();
     }
 
-    private static List<ReportGraphDto> mapReports(List<ReportEntity> reports) {
+    private static List<ReportDto> mapReports(List<ReportEntity> reports) {
         return reports.stream()
                 .map(ProfileMapper::toReportDto)
                 .toList();
     }
 
-    private static SpendingGraphDto toSpendingDto(SpendingEntity spending) {
-        return SpendingGraphDto.builder()
+    private static SpendingDto toSpendingDto(SpendingEntity spending) {
+        return SpendingDto.builder()
                 .id(spending.getId())
                 .date(spending.getDate())
                 .price(spending.getPrice())
-                .category(spending.getCategory().name())
+                .category(spending.getCategory())
                 .description(spending.getDescription())
                 .build();
     }
 
-    private static ReportGraphDto toReportDto(ReportEntity report) {
-        return ReportGraphDto.builder()
+    private static ReportDto toReportDto(ReportEntity report) {
+        return ReportDto.builder()
                 .id(report.getId())
                 .weeklySpending(report.getWeeklySpending())
                 .expensiveCategory(report.getExpensive_category().name())

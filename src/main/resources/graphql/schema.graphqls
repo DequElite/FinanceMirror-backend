@@ -24,6 +24,12 @@ type Profile {
     reports: [Report]
 }
 
+type Dashboard {
+    latest_report: Report
+    left_until_payday: Int
+}
+
 type Query {
     profile: Profile
+    dashboard: Dashboard
 }

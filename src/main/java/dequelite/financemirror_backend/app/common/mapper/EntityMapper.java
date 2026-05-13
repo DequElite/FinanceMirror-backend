@@ -61,6 +61,7 @@ public class EntityMapper {
                 .weeklySpending(report.getWeeklySpending())
                 .remains(report.getRemains())
                 .expenditureRate(report.getExpenditureRate())
+                .expensiveCategory(report.getExpensive_category().name())
                 .leakProblem(report.getLeakProblem())
                 .advice(report.getAdvice())
                 .build();

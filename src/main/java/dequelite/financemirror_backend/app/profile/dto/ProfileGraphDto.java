@@ -1,5 +1,7 @@
 package dequelite.financemirror_backend.app.profile.dto;
 
+import dequelite.financemirror_backend.domain.dto.ReportDto;
+import dequelite.financemirror_backend.domain.dto.SpendingDto;
 import lombok.*;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public class ProfileGraphDto {
 
     private Integer monthSalary;
 
-    private List<SpendingGraphDto> spendings;
+    private List<SpendingDto> spendings;
 
-    private List<ReportGraphDto> reports;
+    private List<ReportDto> reports;
 }

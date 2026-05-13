@@ -13,6 +13,7 @@ public class ReportDto {
     private UUID id;
     private Integer weeklySpending;
     private Integer remains;
+    private String expensiveCategory;
     private String expenditureRate;
     private String leakProblem;
     private String advice;
