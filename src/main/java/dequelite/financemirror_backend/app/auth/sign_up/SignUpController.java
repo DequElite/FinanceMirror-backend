@@ -38,7 +38,7 @@ public class SignUpController {
                         LocalDateTime.now(),
                         responseDto.getRefreshTokenExpiration()
                 ).getSeconds())
-                .sameSite("none")
+                .sameSite("lax")
                 .build();
 
         return ResponseEntity.ok()

@@ -5,8 +5,10 @@ import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.spending.CategoryEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -45,4 +47,8 @@ public class ReportEntity {
 
     @Column(name = "advice", unique = false, nullable = false, updatable = false)
     private String advice;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }

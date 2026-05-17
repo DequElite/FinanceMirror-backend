@@ -15,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class AiReportService {
     private final AiService aiService;
-    private final FinancePrompts financePrompts;
 
     public AiReportResponseDto ask(
             String salary,

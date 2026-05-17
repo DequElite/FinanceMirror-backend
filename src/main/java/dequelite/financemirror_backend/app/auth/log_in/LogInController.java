@@ -36,7 +36,7 @@ public class LogInController {
                         LocalDateTime.now(),
                         serviceResponseDto.getRefreshTokenExpiration()
                 ).getSeconds())
-                .sameSite("none")
+                .sameSite("lax")
                 .build();
 
         return ResponseEntity.ok()

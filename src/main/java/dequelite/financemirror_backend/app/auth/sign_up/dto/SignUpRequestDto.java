@@ -10,7 +10,7 @@ public class SignUpRequestDto {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 10, message = "Password must be between 6 and 10 characters")
+    @Size(min = 6, max = 20, message = "Password must be between 6 and 10 characters")
     private String password;
 
     @NotNull
