@@ -30,11 +30,10 @@ public class DashboardService {
         }
 
         Optional<ReportEntity> latestReport = this.reportRepository.findTopByProfile_IdOrderByCreatedAtDesc(foundProfile.get().getId());
-        if(latestReport.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
 
-        ReportDto reportDto = EntityMapper.toReportDto(latestReport.get());
+        ReportDto reportDto = latestReport
+                .map(EntityMapper::toReportDto)
+                .orElse(null);
 
         long leftUntilPayday = this.daysUntilEndOfMonth();
 
