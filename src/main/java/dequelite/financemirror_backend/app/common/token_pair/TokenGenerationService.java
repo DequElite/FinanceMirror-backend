@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -46,7 +47,8 @@ public class TokenGenerationService {
                 refreshTokenTtl
         );
         String hashedRefreshToken = this.passwordEncoder.encode(refreshToken);
-        LocalDateTime refreshTokenExpiration = LocalDateTime.now().plusMinutes(refreshTokenTtl/1000);
+        LocalDateTime refreshTokenExpiration = LocalDateTime.now()
+                .plus(Duration.ofMillis(refreshTokenTtl));
 
         return TokenPairDto.builder()
                 .accessToken(accessToken)

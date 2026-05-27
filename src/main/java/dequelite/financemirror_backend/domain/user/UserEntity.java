@@ -38,7 +38,7 @@ public class UserEntity {
     @JsonManagedReference
     private ProfileEntity profile;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "session_id")
     @JsonManagedReference
     private SessionEntity session;

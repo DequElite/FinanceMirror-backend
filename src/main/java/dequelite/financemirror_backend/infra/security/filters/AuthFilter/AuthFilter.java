@@ -29,13 +29,19 @@ public class AuthFilter extends OncePerRequestFilter {
     private final AuthProcessor authProcessor;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+        return path.startsWith("/auth/");
+    }
+
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        log.info("=== FILTER START ===");
+        log.info("=== FILTER START === PATH: {}", request.getServletPath());
 
         String authHeader = request.getHeader("Authorization");
 
@@ -43,19 +49,10 @@ public class AuthFilter extends OncePerRequestFilter {
 
         try {
 
-            if(authHeader == null) {
-
-                log.info("HEADER NULL");
-
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            if(!authHeader.startsWith("Bearer ")) {
-
-                log.info("HEADER NOT BEARER");
-
-                filterChain.doFilter(request, response);
+            if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Unauthorized\"}");
                 return;
             }
 

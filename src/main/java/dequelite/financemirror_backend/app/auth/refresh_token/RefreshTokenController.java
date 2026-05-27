@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.auth.refresh_token;
 import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenResponseDto;
 import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenServiceResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/auth/refresh-token")
 @RequiredArgsConstructor
+@Slf4j
 public class RefreshTokenController {
     private final RefreshTokenService service;
 
@@ -24,6 +26,7 @@ public class RefreshTokenController {
     public ResponseEntity<RefreshTokenResponseDto> refreshToken(
             @CookieValue(name = "refreshToken") String refreshToken
     ) {
+        log.info("REFRESH STARTED: {}", refreshToken);
         RefreshTokenServiceResponseDto responseDto = this.service.refreshToken(refreshToken);
 
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", responseDto.getRefreshToken())
@@ -34,8 +37,10 @@ public class RefreshTokenController {
                         LocalDateTime.now(),
                         responseDto.getRefreshTokenExpiration()
                 ).getSeconds())
-                .sameSite("none")
+                .sameSite("lax")
                 .build();
+
+        log.info("REFRESH FINISHED: {}", responseDto);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
