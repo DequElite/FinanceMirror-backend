@@ -6,6 +6,7 @@ import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpServiceRespons
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,15 @@ import java.time.LocalDateTime;
 public class SignUpController {
     private final SignUpService service;
 
+    @Value("${app.cookie.secure}")
+    private boolean cookieSecure;
+
+    @Value("${app.cookie.same-site}")
+    private String cookieSameSite;
+
+    @Value("${app.cookie.domain:}")
+    private String cookieDomain;
+
     @PostMapping
     public ResponseEntity<SignUpResponseDto> signUp(
             @Valid @RequestBody SignUpRequestDto body
@@ -32,13 +42,14 @@ public class SignUpController {
 
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", responseDto.getRefreshToken())
                 .httpOnly(true)
-                .secure(false)
+                .secure(cookieSecure)
                 .path("/")
                 .maxAge(Duration.between(
                         LocalDateTime.now(),
                         responseDto.getRefreshTokenExpiration()
                 ).getSeconds())
-                .sameSite("lax")
+                .sameSite(cookieSameSite)
+                .domain(cookieDomain.isBlank() ? null : cookieDomain)
                 .build();
 
         return ResponseEntity.ok()
