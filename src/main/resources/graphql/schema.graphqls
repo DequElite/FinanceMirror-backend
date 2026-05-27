@@ -8,18 +8,18 @@ type Spending {
 
 type Report {
     id: ID
-    weekly_spending: Int
-    expensive_category: String
-    remains: String
-    expenditure_rate: String
-    leak_problem: String
+    weeklySpending: Int
+    expensiveCategory: String
+    remains: Int
+    expenditureRate: String
+    leakProblem: String
     advice: String
 }
 
 type Profile {
     id: ID
     email: String
-    month_salary: Int
+    monthSalary: Int
     spendings: [Spending]
     reports: [Report]
 }

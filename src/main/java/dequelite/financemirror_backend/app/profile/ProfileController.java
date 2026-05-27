@@ -24,7 +24,7 @@ public class ProfileController {
 
         ProfileGraphDto result = this.service.getProfile(UUID.fromString(user.getSub()));
 
-        log.info("GRAPHQL profile request END | userId={}", user.getSub());
+        log.info("profile: {}", result);
         return result;
     }
 }
