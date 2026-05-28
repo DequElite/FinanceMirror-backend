@@ -96,11 +96,11 @@ public class AnalyzeUserService {
     private List<SpendingEntity> spendings(UUID profileId){
         LocalDate now = LocalDate.now();
 
-        LocalDate startOfWeek = now.minusDays(7);
+        LocalDate startOfMonth = now.withDayOfMonth(1);
 
         return this.spendingRepository.findAllByProfile_IdAndDateBetween(
                 profileId,
-                startOfWeek,
+                startOfMonth,
                 now
         );
     }
