@@ -31,6 +31,9 @@ public class ProfileEntity {
     @Column(name = "month_salary", unique = false, nullable = false, updatable = true)
     private Integer monthSalary;
 
+    @Column(name = "currency", nullable = false, length = 3)
+    private String currency = "UAH";
+
     @OneToMany(mappedBy = "profile")
     @JsonManagedReference
     private List<SpendingEntity> spendings;
