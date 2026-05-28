@@ -18,6 +18,7 @@ public class AiReportService {
 
     public AiReportResponseDto ask(
             String salary,
+            String currency,
             String weeklySpending,
             String remains,
             String daysUntilSalary,
@@ -25,6 +26,7 @@ public class AiReportService {
     ) {
         String prompt = FinancePrompts.financer(
                 salary,
+                currency,
                 weeklySpending,
                 remains,
                 daysUntilSalary,

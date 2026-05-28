@@ -26,6 +26,7 @@ public class ReportService {
 
         AiReportResponseDto aiReportResponseDto = this.aiReportService.ask(
             String.valueOf(analyzedDto.getProfile().getMonthSalary()),
+            analyzedDto.getProfile().getCurrency(),
             weeklySpending,
             remains,
             String.valueOf(analyzedDto.getDaysUntilSalary()),

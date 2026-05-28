@@ -4,6 +4,7 @@ public class FinancePrompts {
 
     public static String financer(
             String salary,
+            String currency,
             String weeklySpending,
             String remains,
             String daysUntilSalary,
@@ -23,6 +24,7 @@ public class FinancePrompts {
 
                 Проанализируй данные пользователя:
                 - Ежемесячная зарплата: %s
+                - Валюта зарплаты: %s
                 - Потрачено за неделю: %s
                 - Остаток денег: %s
                 - Дней до зарплаты: %s
@@ -56,6 +58,7 @@ public class FinancePrompts {
                 """
                 .formatted(
                         salary,
+                        currency,
                         weeklySpending,
                         remains,
                         daysUntilSalary,
