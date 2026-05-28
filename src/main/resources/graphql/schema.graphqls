@@ -20,6 +20,7 @@ type Profile {
     id: ID
     email: String
     monthSalary: Int
+    currency: String
     spendings: [Spending]
     reports: [Report]
 }
