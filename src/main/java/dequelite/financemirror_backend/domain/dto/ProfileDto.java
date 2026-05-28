@@ -12,4 +12,5 @@ import java.util.UUID;
 public class ProfileDto {
     private UUID id;
     private Integer monthSalary;
+    private String currency;
 }

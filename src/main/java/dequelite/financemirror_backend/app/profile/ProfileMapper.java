@@ -18,6 +18,7 @@ public class ProfileMapper {
                 .id(profile.getId())
                 .email(profile.getUser().getEmail())
                 .monthSalary(profile.getMonthSalary())
+                .currency(profile.getCurrency())
                 .spendings(mapSpendings(profile.getSpendings()))
                 .reports(mapReports(profile.getReports()))
                 .build();

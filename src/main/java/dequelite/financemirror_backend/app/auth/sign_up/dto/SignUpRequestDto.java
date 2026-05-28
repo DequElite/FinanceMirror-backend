@@ -2,6 +2,7 @@ package dequelite.financemirror_backend.app.auth.sign_up.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 public class SignUpRequestDto {
@@ -16,4 +17,8 @@ public class SignUpRequestDto {
     @NotNull
     @Min(0)
     private Integer salary;
+
+    @NotBlank
+    @Length(max = 3, min = 3)
+    private String currency;
 }

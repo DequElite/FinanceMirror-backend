@@ -19,6 +19,7 @@ public class ProfileGraphDto {
     private String email;
 
     private Integer monthSalary;
+    private String currency;
 
     private List<SpendingDto> spendings;
 

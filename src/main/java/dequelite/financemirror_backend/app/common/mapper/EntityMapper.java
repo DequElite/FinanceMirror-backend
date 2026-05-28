@@ -34,6 +34,7 @@ public class EntityMapper {
         return ProfileDto.builder()
                 .id(profile.getId())
                 .monthSalary(profile.getMonthSalary())
+                .currency(profile.getCurrency())
                 .build();
     }
 
