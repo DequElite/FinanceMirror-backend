@@ -11,6 +11,7 @@ import java.util.UUID;
 @Builder
 public class ProfileDto {
     private UUID id;
+    private Integer balance;
     private Integer monthSalary;
     private String currency;
 }

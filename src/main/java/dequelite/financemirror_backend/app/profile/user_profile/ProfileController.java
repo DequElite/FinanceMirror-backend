@@ -1,6 +1,6 @@
-package dequelite.financemirror_backend.app.profile;
+package dequelite.financemirror_backend.app.profile.user_profile;
 
-import dequelite.financemirror_backend.app.profile.dto.ProfileGraphDto;
+import dequelite.financemirror_backend.app.profile.user_profile.dto.ProfileGraphDto;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

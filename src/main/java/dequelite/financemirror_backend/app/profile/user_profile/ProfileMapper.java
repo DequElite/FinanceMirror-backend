@@ -1,6 +1,6 @@
-package dequelite.financemirror_backend.app.profile;
+package dequelite.financemirror_backend.app.profile.user_profile;
 
-import dequelite.financemirror_backend.app.profile.dto.ProfileGraphDto;
+import dequelite.financemirror_backend.app.profile.user_profile.dto.ProfileGraphDto;
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.dto.SpendingDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
@@ -17,6 +17,7 @@ public class ProfileMapper {
         ProfileGraphDto dto = ProfileGraphDto.builder()
                 .id(profile.getId())
                 .email(profile.getUser().getEmail())
+                .balance(profile.getBalance())
                 .monthSalary(profile.getMonthSalary())
                 .currency(profile.getCurrency())
                 .spendings(mapSpendings(profile.getSpendings()))

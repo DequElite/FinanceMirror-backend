@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.dto;
+package dequelite.financemirror_backend.app.profile.user_profile.dto;
 
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.dto.SpendingDto;
@@ -18,6 +18,7 @@ public class ProfileGraphDto {
 
     private String email;
 
+    private Integer balance;
     private Integer monthSalary;
     private String currency;
 

@@ -19,6 +19,7 @@ type Report {
 type Profile {
     id: ID
     email: String
+    balance: Int
     monthSalary: Int
     currency: String
     spendings: [Spending]
