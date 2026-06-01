@@ -7,6 +7,7 @@ import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class DeleteSpendingService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
 
+    @Transactional
     public void deleteSpending(
             UUID userId,
             UUID spendingId
@@ -35,6 +37,8 @@ public class DeleteSpendingService {
         if(spending.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
+
+        profile.get().setBalance(profile.get().getBalance() + spending.get().getPrice());
 
         this.spendingRepository.delete(spending.get());
     }
