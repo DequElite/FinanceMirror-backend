@@ -28,6 +28,9 @@ public class ProfileEntity {
     @JsonBackReference
     private UserEntity user;
 
+    @Column(name = "balance", unique = false, nullable = false, updatable = true)
+    private Integer balance = 0;
+
     @Column(name = "month_salary", unique = false, nullable = false, updatable = true)
     private Integer monthSalary;
 
