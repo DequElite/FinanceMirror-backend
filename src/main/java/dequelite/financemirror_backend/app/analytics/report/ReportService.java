@@ -20,24 +20,28 @@ public class ReportService {
     public void createReport(UUID userId){
         AnalyzedDto analyzedDto = this.analyzeUserService.analyze(userId);
 
-        String weeklySpending = String.valueOf(analyzedDto.getTotalSpent());
-        String expensive_category = analyzedDto.getExpensiveCategory().toString();
-        String remains = String.valueOf(analyzedDto.getRemains());
-
-        AiReportResponseDto aiReportResponseDto = this.aiReportService.ask(
-            String.valueOf(analyzedDto.getProfile().getMonthSalary()),
-            analyzedDto.getProfile().getCurrency(),
-            weeklySpending,
-            remains,
-            String.valueOf(analyzedDto.getDaysUntilSalary()),
-            expensive_category
+        AiReportResponseDto aiReportResponseDto = aiReportService.ask(
+                analyzedDto.getProfile().getCurrency(),
+                String.valueOf(analyzedDto.getProfile().getMonthSalary()),
+                String.valueOf(analyzedDto.getReport_balance()),
+                String.valueOf(analyzedDto.getTotalSpent()),
+                String.valueOf(analyzedDto.getSpentPercentOfSalary()),
+                String.valueOf(analyzedDto.getAverageDailySpending()),
+                String.valueOf(analyzedDto.getDailyLimit()),
+                String.valueOf(analyzedDto.getDaysUntilSalary()),
+                analyzedDto.getExpensiveCategory() != null
+                        ? analyzedDto.getExpensiveCategory().name()
+                        : "NONE"
         );
 
         ReportEntity newReport = ReportEntity.builder()
                 .profile(analyzedDto.getProfile())
                 .weeklySpending(analyzedDto.getTotalSpent())
                 .expensive_category(analyzedDto.getExpensiveCategory())
-                .remains(analyzedDto.getRemains())
+                .spentPercentOfSalary(analyzedDto.getSpentPercentOfSalary())
+                .averageDailySpending(analyzedDto.getAverageDailySpending())
+                .dailyLimit(analyzedDto.getDailyLimit())
+                .reportBalance(analyzedDto.getReport_balance())
                 .expenditureRate(aiReportResponseDto.getExpenditure_rate())
                 .leakProblem(aiReportResponseDto.getLeak_problem())
                 .advice(aiReportResponseDto.getAdvice())

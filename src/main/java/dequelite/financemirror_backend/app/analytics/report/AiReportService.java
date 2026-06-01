@@ -17,18 +17,24 @@ public class AiReportService {
     private final AiService aiService;
 
     public AiReportResponseDto ask(
-            String salary,
             String currency,
+            String salary,
+            String balance,
             String weeklySpending,
-            String remains,
+            String spentPercentOfSalary,
+            String averageDailySpending,
+            String dailyLimit,
             String daysUntilSalary,
             String expensiveCategory
     ) {
         String prompt = FinancePrompts.financer(
-                salary,
                 currency,
+                salary,
+                balance,
                 weeklySpending,
-                remains,
+                spentPercentOfSalary,
+                averageDailySpending,
+                dailyLimit,
                 daysUntilSalary,
                 expensiveCategory
         );

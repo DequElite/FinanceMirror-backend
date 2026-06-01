@@ -12,7 +12,10 @@ import lombok.Setter;
 public class AnalyzedDto {
     private int totalSpent;
     private CategoryEnum expensiveCategory;
-    private int remains;
+    private int spentPercentOfSalary;
+    private int averageDailySpending;
+    private int dailyLimit;
+    private int report_balance;
     private ProfileEntity profile;
     private long daysUntilSalary;
 }

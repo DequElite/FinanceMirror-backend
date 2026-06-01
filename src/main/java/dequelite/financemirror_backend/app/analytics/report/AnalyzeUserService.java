@@ -27,16 +27,29 @@ public class AnalyzeUserService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        List<SpendingEntity> spendings = this.spendings(foundProfile.get().getId());
+        ProfileEntity profile = foundProfile.get();
+
+        List<SpendingEntity> spendings = this.spendings(profile.getId());
+
+        long daysUntilEndOfMonth = this.daysUntilEndOfMonth();
 
         int totalSpent = this.totalSpent(spendings);
 
-        int remains = foundProfile.get().getMonthSalary() - totalSpent;
+        CategoryEnum expensiveCategory = this.expensiveCategory(spendings);
+
+        int spentPrecentOfSalary = this.spentPercentOfSalary(profile.getMonthSalary(), totalSpent);
+
+        int averageDailySpending = this.averageDailySpending(totalSpent);
+
+        int dailyLimit = this.dailyLimit(daysUntilEndOfMonth, profile.getBalance());
 
         return AnalyzedDto.builder()
                 .totalSpent(totalSpent)
-                .expensiveCategory(this.expensiveCategory(spendings))
-                .remains(remains)
+                .expensiveCategory(expensiveCategory)
+                .spentPercentOfSalary(spentPrecentOfSalary)
+                .averageDailySpending(averageDailySpending)
+                .dailyLimit(dailyLimit)
+                .report_balance(profile.getBalance())
                 .profile(foundProfile.get())
                 .daysUntilSalary(this.daysUntilEndOfMonth())
                 .build();
@@ -54,6 +67,23 @@ public class AnalyzeUserService {
                 now,
                 endOfMonth
         );
+    }
+
+    private int dailyLimit(long daysUntilEndOfMonth, int balance) {
+        return (int) (balance / daysUntilEndOfMonth);
+    }
+
+    private int averageDailySpending(int spent) {
+        int days = LocalDate.now().getDayOfMonth();
+        if (days == 0) return spent;
+
+        return spent / days;
+    }
+
+    private int spentPercentOfSalary(int salary, int spent) {
+        if (salary == 0) return 0;
+
+        return (int) ((spent * 100.0) / salary);
     }
 
     private CategoryEnum expensiveCategory (List<SpendingEntity> spendings) {
