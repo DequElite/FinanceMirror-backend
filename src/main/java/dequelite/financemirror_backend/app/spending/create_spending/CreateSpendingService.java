@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class CreateSpendingService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
 
+    @Transactional
     public void createSpending(
             CreateSpendingRequestDto body,
             TokenHeaderDTO user
@@ -33,6 +35,8 @@ public class CreateSpendingService {
         if(profile.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+
+        profile.get().setBalance(profile.get().getBalance() - body.getPrice());
 
         CategoryEnum category;
 
