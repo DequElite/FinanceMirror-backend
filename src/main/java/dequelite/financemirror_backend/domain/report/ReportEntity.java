@@ -36,8 +36,17 @@ public class ReportEntity {
     @Column(name = "expensive_category", unique = false, nullable = false, updatable = false)
     private CategoryEnum expensive_category;
 
-    @Column(name = "remains", unique = false, nullable = false, updatable = false)
-    private Integer remains;
+    @Column(name = "spent_percent_of_salary", nullable = false)
+    private Integer spentPercentOfSalary;
+
+    @Column(name = "average_daily_spending", nullable = false)
+    private Integer averageDailySpending;
+
+    @Column(name = "daily_limit", nullable = false)
+    private Integer dailyLimit;
+
+    @Column(name = "report_balance", unique = false, nullable = false, updatable = false)
+    private Integer reportBalance;
 
     @Column(name = "expenditure_rate", unique = false, nullable = false, updatable = false)
     private String expenditureRate;
