@@ -10,10 +10,10 @@ type Report {
     id: ID
     weeklySpending: Int
     expensiveCategory: String
-    spent_percent_of_salary: Int
-    average_daily_spending: Int
-    daily_limit: Int
-    report_balance: Int
+    spentPercentOfSalary: Int
+    averageDailySpending: Int
+    dailyLimit: Int
+    reportBalance: Int
     expenditureRate: String
     leakProblem: String
     advice: String
