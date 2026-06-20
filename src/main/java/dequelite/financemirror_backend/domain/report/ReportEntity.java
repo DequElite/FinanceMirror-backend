@@ -29,6 +29,9 @@ public class ReportEntity {
     @JsonBackReference
     private ProfileEntity profile;
 
+    @Enumerated(EnumType.STRING)
+    private ReportTypeEnum type;
+
     @Column(name = "weekly_spending", unique = false, nullable = false, updatable = false)
     private Integer weeklySpending;
 
@@ -48,13 +51,16 @@ public class ReportEntity {
     @Column(name = "report_balance", unique = false, nullable = false, updatable = false)
     private Integer reportBalance;
 
-    @Column(name = "expenditure_rate", unique = false, nullable = false, updatable = false)
+    @Column(name = "finance_result", unique = false, nullable = false, updatable = false)
+    private String financeResult;
+
+    @Column(name = "expenditure_rate", unique = false, nullable = true, updatable = false)
     private String expenditureRate;
 
-    @Column(name = "leak_problem", unique = false, nullable = false, updatable = false)
+    @Column(name = "leak_problem", unique = false, nullable = true, updatable = false)
     private String leakProblem;
 
-    @Column(name = "advice", unique = false, nullable = false, updatable = false)
+    @Column(name = "advice", unique = false, nullable = true, updatable = false)
     private String advice;
 
     @CreationTimestamp

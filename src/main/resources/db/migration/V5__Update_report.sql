@@ -1,0 +1,15 @@
+
+ALTER TABLE report
+    ADD COLUMN type VARCHAR(255);
+
+ALTER TABLE report
+    ADD COLUMN finance_result VARCHAR(255) NOT NULL DEFAULT '';
+
+ALTER TABLE report
+    ALTER COLUMN expenditure_rate DROP NOT NULL;
+
+ALTER TABLE report
+    ALTER COLUMN leak_problem DROP NOT NULL;
+
+ALTER TABLE report
+    ALTER COLUMN advice DROP NOT NULL;

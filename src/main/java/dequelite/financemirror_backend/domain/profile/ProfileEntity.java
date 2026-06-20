@@ -2,6 +2,7 @@ package dequelite.financemirror_backend.domain.profile;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.user.UserEntity;
@@ -40,6 +41,10 @@ public class ProfileEntity {
     @OneToMany(mappedBy = "profile")
     @JsonManagedReference
     private List<SpendingEntity> spendings;
+
+    @OneToMany(mappedBy = "profile")
+    @JsonManagedReference
+    private List<ReplenishmentEntity> replenishments;
 
     @OneToMany(mappedBy = "profile")
     @JsonManagedReference
