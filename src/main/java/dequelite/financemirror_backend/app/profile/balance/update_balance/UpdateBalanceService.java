@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.update_balance;
+package dequelite.financemirror_backend.app.profile.balance.update_balance;
 
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
+
+//todo: дописать по плану (готов только контроллер, нету нужной функции для авто репорта)
 
 @Service
 @RequiredArgsConstructor

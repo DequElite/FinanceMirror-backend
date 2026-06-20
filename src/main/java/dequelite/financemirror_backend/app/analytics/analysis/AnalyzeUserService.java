@@ -1,8 +1,10 @@
-package dequelite.financemirror_backend.app.analytics.report;
+package dequelite.financemirror_backend.app.analytics.analysis;
 
-import dequelite.financemirror_backend.app.analytics.report.dto.AnalyzedDto;
+import dequelite.financemirror_backend.app.analytics.ai_report.dto.AnalyzedDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
+import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
+import dequelite.financemirror_backend.domain.replenishment.ReplenishmentRepo;
 import dequelite.financemirror_backend.domain.spending.CategoryEnum;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingRepository;
@@ -20,6 +22,7 @@ import java.util.*;
 public class AnalyzeUserService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
+    private final ReplenishmentRepo replenishmentRepo;
 
     public AnalyzedDto analyze(UUID userId){
         Optional<ProfileEntity> foundProfile = this.profileRepository.findByUser_Id(userId);
@@ -31,9 +34,13 @@ public class AnalyzeUserService {
 
         List<SpendingEntity> spendings = this.spendings(profile.getId());
 
+        List<ReplenishmentEntity> balanceUpdates = this.balanceUpdates(profile.getId());
+
         long daysUntilEndOfMonth = this.daysUntilEndOfMonth();
 
         int totalSpent = this.totalSpent(spendings);
+
+        int totalBalanceUpdates = this.totalBalanceUpdates(balanceUpdates);
 
         CategoryEnum expensiveCategory = this.expensiveCategory(spendings);
 
@@ -42,6 +49,8 @@ public class AnalyzeUserService {
         int averageDailySpending = this.averageDailySpending(totalSpent);
 
         int dailyLimit = this.dailyLimit(daysUntilEndOfMonth, profile.getBalance());
+
+        String financeResult = this.financeResult(totalBalanceUpdates, totalSpent);
 
         return AnalyzedDto.builder()
                 .totalSpent(totalSpent)
@@ -52,6 +61,7 @@ public class AnalyzeUserService {
                 .report_balance(profile.getBalance())
                 .profile(foundProfile.get())
                 .daysUntilSalary(this.daysUntilEndOfMonth())
+                .financeResult(financeResult)
                 .build();
     }
 
@@ -123,6 +133,12 @@ public class AnalyzeUserService {
                 .sum();
     }
 
+    private int totalBalanceUpdates (List<ReplenishmentEntity> balanceUpdates) {
+        return balanceUpdates.stream()
+                .mapToInt(ReplenishmentEntity::getAmount)
+                .sum();
+    }
+
     private List<SpendingEntity> spendings(UUID profileId){
         LocalDate now = LocalDate.now();
 
@@ -133,5 +149,32 @@ public class AnalyzeUserService {
                 startOfMonth,
                 now
         );
+    }
+
+    private List<ReplenishmentEntity> balanceUpdates(UUID profileId) {
+        LocalDate now = LocalDate.now();
+
+        LocalDate startOfMonth = now.withDayOfMonth(1);
+
+        return this.replenishmentRepo.findAllByProfile_IdAndDateBetween(
+                profileId,
+                startOfMonth,
+                now
+        );
+    }
+
+    private String financeResult(int totalBalanceUpdates, int totalSpent) {
+         int result = totalBalanceUpdates - totalSpent;
+
+         String financeResult;
+         if(result < 0) {
+             financeResult = "- " + String.valueOf(result);
+         } else if (result > 0) {
+             financeResult = "+ " + String.valueOf(result);
+         } else {
+             financeResult = "0";
+         }
+
+         return financeResult;
     }
 }

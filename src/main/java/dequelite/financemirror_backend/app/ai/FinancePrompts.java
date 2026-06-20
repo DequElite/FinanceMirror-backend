@@ -11,7 +11,8 @@ public class FinancePrompts {
             String averageDailySpending,
             String dailyLimit,
             String daysUntilSalary,
-            String expensiveCategory
+            String expensiveCategory,
+            String financeResult
     ) {
 
         return """
@@ -35,6 +36,7 @@ public class FinancePrompts {
                 - Дневной лимит: %s
                 - Дней до зарплаты: %s
                 - Самая затратная категория: %s
+                - Финансовый результат пользователя: %s
 
                 Определи:
 
@@ -70,7 +72,8 @@ public class FinancePrompts {
                         averageDailySpending,
                         dailyLimit,
                         daysUntilSalary,
-                        expensiveCategory
+                        expensiveCategory,
+                        financeResult
                 );
     }
 }

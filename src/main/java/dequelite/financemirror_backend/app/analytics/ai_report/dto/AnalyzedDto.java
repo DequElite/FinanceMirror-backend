@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.analytics.report.dto;
+package dequelite.financemirror_backend.app.analytics.ai_report.dto;
 
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.spending.CategoryEnum;
@@ -18,4 +18,5 @@ public class AnalyzedDto {
     private int report_balance;
     private ProfileEntity profile;
     private long daysUntilSalary;
+    private String financeResult;
 }
