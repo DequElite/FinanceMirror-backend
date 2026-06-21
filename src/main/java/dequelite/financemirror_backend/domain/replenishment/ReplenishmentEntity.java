@@ -37,5 +37,5 @@ public class ReplenishmentEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private CategoryEnum category;
+    private ReplenishmentEnum category;
 }

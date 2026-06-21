@@ -25,7 +25,7 @@ public class UpdateBalanceController {
             @Valid @RequestBody UpdateBalanceRequestDto body,
             @AuthenticationPrincipal TokenHeaderDTO user
             ){
-        this.service.updateBalance(body.getAmount(), UUID.fromString(user.getSub()));
+        this.service.updateBalance(body, UUID.fromString(user.getSub()));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
