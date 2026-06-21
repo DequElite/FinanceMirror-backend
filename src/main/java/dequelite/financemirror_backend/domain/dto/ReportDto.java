@@ -20,6 +20,7 @@ public class ReportDto {
     private Integer dailyLimit;
     private Integer reportBalance;
     private String expensiveCategory;
+    private String financeResult;
     private String expenditureRate;
     private String leakProblem;
     private String advice;

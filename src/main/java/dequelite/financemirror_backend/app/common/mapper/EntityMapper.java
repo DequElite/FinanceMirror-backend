@@ -1,10 +1,8 @@
 package dequelite.financemirror_backend.app.common.mapper;
 
-import dequelite.financemirror_backend.domain.dto.ProfileDto;
-import dequelite.financemirror_backend.domain.dto.ReportDto;
-import dequelite.financemirror_backend.domain.dto.SpendingDto;
-import dequelite.financemirror_backend.domain.dto.UserDto;
+import dequelite.financemirror_backend.domain.dto.*;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
+import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.user.UserEntity;
@@ -12,6 +10,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EntityMapper {
+
+    public static ReplenishmentDto toReplenishmentDto(ReplenishmentEntity replenishment) {
+        if(replenishment == null) {
+            return null;
+        }
+
+        return ReplenishmentDto.builder()
+                .id(replenishment.getId())
+                .date(replenishment.getDate())
+                .amount(replenishment.getAmount())
+                .description(replenishment.getDescription())
+                .category(replenishment.getCategory())
+                .build();
+    }
 
     public static UserDto toUserDto(UserEntity user) {
         if (user == null) {
@@ -66,6 +78,7 @@ public class EntityMapper {
                 .dailyLimit(report.getDailyLimit())
                 .reportBalance(report.getReportBalance())
                 .expensiveCategory(report.getExpensive_category().name())
+                .financeResult(report.getFinanceResult())
                 .expenditureRate(report.getExpenditureRate())
                 .leakProblem(report.getLeakProblem())
                 .advice(report.getAdvice())

@@ -1,9 +1,12 @@
 package dequelite.financemirror_backend.app.profile.user_profile;
 
+import dequelite.financemirror_backend.app.common.mapper.EntityMapper;
 import dequelite.financemirror_backend.app.profile.user_profile.dto.ProfileGraphDto;
+import dequelite.financemirror_backend.domain.dto.ReplenishmentDto;
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.dto.SpendingDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
+import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import org.springframework.stereotype.Component;
@@ -22,9 +25,16 @@ public class ProfileMapper {
                 .currency(profile.getCurrency())
                 .spendings(mapSpendings(profile.getSpendings()))
                 .reports(mapReports(profile.getReports()))
+                .replenishments(mapReplenishments(profile.getReplenishments()))
                 .build();
 
         return dto;
+    }
+
+    private static List<ReplenishmentDto> mapReplenishments(List<ReplenishmentEntity> replenishments) {
+        return replenishments.stream()
+                .map(ProfileMapper::toReplenishmentDto)
+                .toList();
     }
 
     private static List<SpendingDto> mapSpendings(List<SpendingEntity> spendings) {
@@ -61,6 +71,16 @@ public class ProfileMapper {
                 .expenditureRate(report.getExpenditureRate())
                 .leakProblem(report.getLeakProblem())
                 .advice(report.getAdvice())
+                .build();
+    }
+
+    private static ReplenishmentDto toReplenishmentDto(ReplenishmentEntity replenishment) {
+        return ReplenishmentDto.builder()
+                .id(replenishment.getId())
+                .date(replenishment.getDate())
+                .amount(replenishment.getAmount())
+                .description(replenishment.getDescription())
+                .category(replenishment.getCategory())
                 .build();
     }
 }

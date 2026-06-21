@@ -6,6 +6,14 @@ type Spending {
     description: String
 }
 
+type Replenishment {
+    id: ID
+    date: String
+    amount: Int
+    type: String
+    description: String
+}
+
 type Report {
     id: ID
     weeklySpending: Int
@@ -14,6 +22,7 @@ type Report {
     averageDailySpending: Int
     dailyLimit: Int
     reportBalance: Int
+    financeReport: String
     expenditureRate: String
     leakProblem: String
     advice: String
@@ -27,6 +36,7 @@ type Profile {
     currency: String
     spendings: [Spending]
     reports: [Report]
+    replenishment: [Replenishment]
 }
 
 type Dashboard {
