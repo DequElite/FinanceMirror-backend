@@ -16,6 +16,7 @@ type Replenishment {
 
 type Report {
     id: ID
+    type: String
     weeklySpending: Int
     expensiveCategory: String
     spentPercentOfSalary: Int
