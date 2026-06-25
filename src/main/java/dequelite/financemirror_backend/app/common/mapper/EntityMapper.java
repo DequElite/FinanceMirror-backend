@@ -21,7 +21,7 @@ public class EntityMapper {
                 .date(replenishment.getDate())
                 .amount(replenishment.getAmount())
                 .description(replenishment.getDescription())
-                .category(replenishment.getCategory())
+                .type(replenishment.getType())
                 .build();
     }
 
@@ -72,6 +72,7 @@ public class EntityMapper {
 
         return ReportDto.builder()
                 .id(report.getId())
+                .type(report.getType())
                 .weeklySpending(report.getWeeklySpending())
                 .spentPercentOfSalary(report.getSpentPercentOfSalary())
                 .averageDailySpending(report.getAverageDailySpending())

@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.profile.balance.update_balance;
 
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
+import dequelite.financemirror_backend.app.analytics.auto_report.AutoReportService;
 import dequelite.financemirror_backend.app.profile.balance.update_balance.dto.UpdateBalanceRequestDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class UpdateBalanceService {
     private final ProfileRepository profileRepository;
     private final ReplenishmentRepo replenishmentRepo;
-    private final AnalyzeUserService analyzeUserService;
+    private final AutoReportService autoReportService;
 
     @Transactional
     public void updateBalance(UpdateBalanceRequestDto body, UUID userId) {
@@ -37,12 +38,12 @@ public class UpdateBalanceService {
                 .date(body.getDate())
                 .amount(body.getAmount())
                 .description(body.getDescription())
-                .category(body.getType())
+                .type(body.getType())
                 .build();
 
         replenishmentRepo.save(newReplenishment);
         profileRepository.save(profile);
 
-        analyzeUserService.analyze(userId);
+        autoReportService.createAutoReport(userId);
     }
 }

@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.domain.dto;
 
+import dequelite.financemirror_backend.domain.report.ReportTypeEnum;
 import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @ToString
 public class ReportDto {
     private UUID id;
+    private ReportTypeEnum type;
     private Integer weeklySpending;
     private Integer spentPercentOfSalary;
     private Integer averageDailySpending;

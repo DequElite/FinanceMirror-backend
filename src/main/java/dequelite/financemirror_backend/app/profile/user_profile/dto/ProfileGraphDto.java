@@ -27,5 +27,5 @@ public class ProfileGraphDto {
 
     private List<ReportDto> reports;
 
-    private List<ReplenishmentDto> replenishments;
+    private List<ReplenishmentDto> replenishment;
 }

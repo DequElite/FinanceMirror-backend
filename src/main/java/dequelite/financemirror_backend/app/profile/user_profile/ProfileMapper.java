@@ -25,7 +25,7 @@ public class ProfileMapper {
                 .currency(profile.getCurrency())
                 .spendings(mapSpendings(profile.getSpendings()))
                 .reports(mapReports(profile.getReports()))
-                .replenishments(mapReplenishments(profile.getReplenishments()))
+                .replenishment(mapReplenishments(profile.getReplenishments()))
                 .build();
 
         return dto;
@@ -62,6 +62,7 @@ public class ProfileMapper {
     private static ReportDto toReportDto(ReportEntity report) {
         return ReportDto.builder()
                 .id(report.getId())
+                .type(report.getType())
                 .weeklySpending(report.getWeeklySpending())
                 .spentPercentOfSalary(report.getSpentPercentOfSalary())
                 .averageDailySpending(report.getAverageDailySpending())
@@ -71,6 +72,7 @@ public class ProfileMapper {
                 .expenditureRate(report.getExpenditureRate())
                 .leakProblem(report.getLeakProblem())
                 .advice(report.getAdvice())
+                .financeResult(report.getFinanceResult())
                 .build();
     }
 
@@ -80,7 +82,7 @@ public class ProfileMapper {
                 .date(replenishment.getDate())
                 .amount(replenishment.getAmount())
                 .description(replenishment.getDescription())
-                .category(replenishment.getCategory())
+                .type(replenishment.getType())
                 .build();
     }
 }

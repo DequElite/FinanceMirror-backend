@@ -27,6 +27,7 @@ public class RegisterUserService {
         ProfileEntity profile = ProfileEntity.builder()
                 .monthSalary(body.getSalary())
                 .currency(body.getCurrency())
+                .balance(0)
                 .build();
 
         UserEntity newUser = UserEntity.builder()

@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.spending.delete_spending;
 
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
+import dequelite.financemirror_backend.app.analytics.auto_report.AutoReportService;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class DeleteSpendingService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
-    private final AnalyzeUserService analyzeUserService;
+    private final AutoReportService autoReportService;
 
     @Transactional
     public void deleteSpending(
@@ -44,6 +45,6 @@ public class DeleteSpendingService {
 
         this.spendingRepository.delete(spending.get());
 
-        analyzeUserService.analyze(userId);
+        autoReportService.createAutoReport(userId);
     }
 }

@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.spending.create_spending;
 
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
+import dequelite.financemirror_backend.app.analytics.auto_report.AutoReportService;
 import dequelite.financemirror_backend.app.spending.create_spending.dto.CreateSpendingRequestDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
@@ -25,7 +26,7 @@ import java.util.UUID;
 public class CreateSpendingService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
-    private final AnalyzeUserService analyzeUserService;
+    private final AutoReportService autoReportService;
 
     @Transactional
     public void createSpending(
@@ -66,7 +67,7 @@ public class CreateSpendingService {
             throw e;
         }
 
-        analyzeUserService.analyze(UUID.fromString(user.getSub()));
+        autoReportService.createAutoReport(UUID.fromString(user.getSub()));
 
         log.info("SERVICE createSpending --end: {}", newSpending);
      }

@@ -21,5 +21,5 @@ public class ReplenishmentDto {
     private LocalDate date;
     private Integer amount;
     private String description;
-    private ReplenishmentEnum category;
+    private ReplenishmentEnum type;
 }

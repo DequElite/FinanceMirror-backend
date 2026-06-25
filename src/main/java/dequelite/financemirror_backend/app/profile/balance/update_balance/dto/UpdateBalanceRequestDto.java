@@ -15,7 +15,7 @@ public class UpdateBalanceRequestDto {
     @Min(0)
     private Integer amount;
 
-    @NotBlank
+    @NotNull
     private ReplenishmentEnum type;
 
     @NotNull

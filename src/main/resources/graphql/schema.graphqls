@@ -23,7 +23,7 @@ type Report {
     averageDailySpending: Int
     dailyLimit: Int
     reportBalance: Int
-    financeReport: String
+    financeResult: String
     expenditureRate: String
     leakProblem: String
     advice: String

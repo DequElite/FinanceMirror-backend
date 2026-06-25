@@ -49,17 +49,17 @@ public class AuthFilter extends OncePerRequestFilter {
 
         try {
 
-//            if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-//                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//                response.setContentType("application/json");
-//                response.getWriter().write("{\"error\": \"Unauthorized\"}");
-//                return;
-//            }
-
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                filterChain.doFilter(request, response);
+            if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Unauthorized\"}");
                 return;
             }
+
+//            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//                filterChain.doFilter(request, response);
+//                return;
+//            }
 
             String token = authHeader.substring(7);
 
