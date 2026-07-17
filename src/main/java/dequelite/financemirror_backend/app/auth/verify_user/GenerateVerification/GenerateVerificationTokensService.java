@@ -3,11 +3,15 @@ package dequelite.financemirror_backend.app.auth.verify_user.GenerateVerificatio
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.HexFormat;
 
 @Service
 @RequiredArgsConstructor
 public class GenerateVerificationTokensService {
+
+    private final SecureRandom random;
+
     public String generateToken () {
         byte[] bytes = new byte[32];
 
