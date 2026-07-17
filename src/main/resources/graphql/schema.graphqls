@@ -1,0 +1,51 @@
+type Spending {
+    id: ID
+    date: String
+    price: Int
+    category: String
+    description: String
+}
+
+type Replenishment {
+    id: ID
+    date: String
+    amount: Int
+    type: String
+    description: String
+}
+
+type Report {
+    id: ID
+    type: String
+    weeklySpending: Int
+    expensiveCategory: String
+    spentPercentOfSalary: Int
+    averageDailySpending: Int
+    dailyLimit: Int
+    reportBalance: Int
+    financeResult: String
+    expenditureRate: String
+    leakProblem: String
+    advice: String
+}
+
+type Profile {
+    id: ID
+    email: String
+    balance: Int
+    monthSalary: Int
+    currency: String
+    spendings: [Spending]
+    reports: [Report]
+    replenishment: [Replenishment]
+}
+
+type Dashboard {
+    latest_report: Report
+    left_until_payday: Int
+}
+
+type Query {
+    profile: Profile
+    dashboard: Dashboard
+}
