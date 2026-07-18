@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.infra.config;
 
 import dequelite.financemirror_backend.infra.security.filters.AuthFilter.AuthFilter;
+import dequelite.financemirror_backend.infra.security.filters.SubscriptionFilter.SubscriptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +25,11 @@ import java.util.List;
 public class SecurityConfig {
 
     private final AuthFilter authFilter;
+    private final SubscriptionFilter subscriptionFilter;
 
     @Value("${client.domain}")
     private String client;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +51,8 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(subscriptionFilter, AuthFilter.class);
 
         return http.build();
     }
