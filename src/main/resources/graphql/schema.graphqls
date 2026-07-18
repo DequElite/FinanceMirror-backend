@@ -29,6 +29,17 @@ type Report {
     advice: String
 }
 
+
+type Subscription {
+    id: String
+    type: String
+    status: String
+    started_at: String
+    created_at: String
+    updated_at: String
+    expires_at: String
+}
+
 type Profile {
     id: ID
     email: String
@@ -38,6 +49,7 @@ type Profile {
     spendings: [Spending]
     reports: [Report]
     replenishment: [Replenishment]
+    subscription: Subscription
 }
 
 type Dashboard {

@@ -5,10 +5,12 @@ import dequelite.financemirror_backend.app.profile.user_profile.dto.ProfileGraph
 import dequelite.financemirror_backend.domain.dto.ReplenishmentDto;
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.dto.SpendingDto;
+import dequelite.financemirror_backend.domain.dto.SubscriptionDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
+import dequelite.financemirror_backend.domain.subscription.SubscriptionEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class ProfileMapper {
                 .spendings(mapSpendings(profile.getSpendings()))
                 .reports(mapReports(profile.getReports()))
                 .replenishment(mapReplenishments(profile.getReplenishments()))
+                .subscription(toSubscriptionDto(profile.getUser().getSubscription()))
                 .build();
 
         return dto;
@@ -47,6 +50,18 @@ public class ProfileMapper {
         return reports.stream()
                 .map(ProfileMapper::toReportDto)
                 .toList();
+    }
+
+    private static SubscriptionDto toSubscriptionDto(SubscriptionEntity subscription) {
+        return SubscriptionDto.builder()
+                .id(subscription.getId())
+                .type(subscription.getType())
+                .status(subscription.getStatus())
+                .created_at(subscription.getCreated_at())
+                .started_at(subscription.getStarted_at())
+                .updated_at(subscription.getUpdated_at())
+                .expires_at(subscription.getExpires_at())
+                .build();
     }
 
     private static SpendingDto toSpendingDto(SpendingEntity spending) {
