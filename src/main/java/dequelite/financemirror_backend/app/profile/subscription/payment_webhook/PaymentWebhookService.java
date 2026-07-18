@@ -10,6 +10,7 @@ import dequelite.financemirror_backend.domain.biling.BillingStatus;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionEntity;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionRepo;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionStatus;
+import dequelite.financemirror_backend.domain.subscription.SubscriptionType;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import dequelite.financemirror_backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -129,6 +130,7 @@ public class PaymentWebhookService {
                 .orElseGet(() -> {
                     SubscriptionEntity newSubscription = new SubscriptionEntity();
                     newSubscription.setUser(user);
+                    newSubscription.setType(SubscriptionType.PREMIUM);
                     newSubscription.setStatus(SubscriptionStatus.ACTIVE);
                     newSubscription.setStarted_at(LocalDate.now());
                     newSubscription.setUpdated_at(LocalDate.now());
@@ -137,6 +139,7 @@ public class PaymentWebhookService {
                     return this.subscriptionRepo.save(newSubscription);
                 });
 
+        subscription.setType(SubscriptionType.PREMIUM);
         subscription.setStatus(SubscriptionStatus.ACTIVE);
         subscription.setStarted_at(LocalDate.now());
         subscription.setUpdated_at(LocalDate.now());
