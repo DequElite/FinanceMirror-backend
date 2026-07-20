@@ -43,7 +43,7 @@ public class PaymentWebhookService {
     private final RestTemplate restTemplate;
 
     @Value("${subscription.expires-at}")
-    private Integer subscriptionExpiresAt;
+    private Long subscriptionExpiresAt;
 
     @Value("${paypal.client-id}")
     private String clientId;
@@ -119,7 +119,7 @@ public class PaymentWebhookService {
     private void handleSubscriptionActivated(JsonNode resource) {
         String paypalSubscriptionId = resource.get("id").asText();
 
-        Optional<BillingEntity> foundBilling = this.billingRepo.findByPaypal_Capture_Id(paypalSubscriptionId);
+        Optional<BillingEntity> foundBilling = this.billingRepo.findByPaypalCaptureId(paypalSubscriptionId);
         if(foundBilling.isPresent()) {
             throw new ResponseStatusException(HttpStatus.OK);
         }
@@ -134,7 +134,7 @@ public class PaymentWebhookService {
                     newSubscription.setStatus(SubscriptionStatus.ACTIVE);
                     newSubscription.setStarted_at(LocalDate.now());
                     newSubscription.setUpdated_at(LocalDate.now());
-                    newSubscription.setExpires_at(LocalDate.now().plus(Duration.ofMillis(subscriptionExpiresAt)));
+                    newSubscription.setExpires_at(LocalDate.now().plusDays(subscriptionExpiresAt));
 
                     return this.subscriptionRepo.save(newSubscription);
                 });
@@ -143,7 +143,7 @@ public class PaymentWebhookService {
         subscription.setStatus(SubscriptionStatus.ACTIVE);
         subscription.setStarted_at(LocalDate.now());
         subscription.setUpdated_at(LocalDate.now());
-        subscription.setExpires_at(LocalDate.now().plus(Duration.ofMillis(subscriptionExpiresAt)));
+        subscription.setExpires_at(LocalDate.now().plusDays(subscriptionExpiresAt));
 
         double amount = 0.0;
         String currency = "USD";
@@ -176,7 +176,7 @@ public class PaymentWebhookService {
     private void handleSubscriptionCancelled(JsonNode resource) {
         String paypalSubscriptionId = resource.get("id").asText();
 
-        Optional<BillingEntity> foundBilling = this.billingRepo.findByPaypal_Capture_Id(paypalSubscriptionId);
+        Optional<BillingEntity> foundBilling = this.billingRepo.findByPaypalCaptureId(paypalSubscriptionId);
         if(foundBilling.isPresent()) {
             throw new ResponseStatusException(HttpStatus.OK);
         }

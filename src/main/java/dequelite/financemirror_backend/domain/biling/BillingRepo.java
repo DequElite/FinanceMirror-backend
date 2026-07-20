@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface BillingRepo extends JpaRepository<BillingEntity, UUID> {
-    Optional<BillingEntity> findByPaypal_Capture_Id(String paypal_capture_id);
+    Optional<BillingEntity> findByPaypalCaptureId(String paypal_capture_id);
 }

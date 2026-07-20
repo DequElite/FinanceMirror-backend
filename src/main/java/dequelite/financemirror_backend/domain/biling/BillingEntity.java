@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "subscription")
+@Table(name = "billing")
 public class BillingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
