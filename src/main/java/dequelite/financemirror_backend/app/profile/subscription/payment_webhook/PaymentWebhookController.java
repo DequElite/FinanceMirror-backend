@@ -3,12 +3,14 @@ package dequelite.financemirror_backend.app.profile.subscription.payment_webhook
 import dequelite.financemirror_backend.app.profile.subscription.payment_webhook.dto.PaymentWebhookRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/profile/payment/paypal/webhook")
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentWebhookController {
     private final PaymentWebhookService service;
 
@@ -21,6 +23,7 @@ public class PaymentWebhookController {
             @RequestHeader("PAYPAL-AUTH-ALGO") String authAlgo,
             @RequestBody String rawBody
             ) {
+        log.info("PaymentWebhookController webhook started");
         this.service.completeSubscription(
                 transmissionId,
                 transmissionTime,
