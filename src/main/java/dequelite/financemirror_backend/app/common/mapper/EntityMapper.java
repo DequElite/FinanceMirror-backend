@@ -5,11 +5,28 @@ import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
+import dequelite.financemirror_backend.domain.subscription.SubscriptionEntity;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EntityMapper {
+
+    public static SubscriptionDto toSubscriptionDto(SubscriptionEntity subscription) {
+        if (subscription == null) {
+            return null;
+        }
+
+        return SubscriptionDto.builder()
+                .id(subscription.getId())
+                .type(subscription.getType())
+                .status(subscription.getStatus())
+                .created_at(subscription.getCreated_at())
+                .started_at(subscription.getStarted_at())
+                .updated_at(subscription.getUpdated_at())
+                .expires_at(subscription.getExpires_at())
+                .build();
+    }
 
     public static ReplenishmentDto toReplenishmentDto(ReplenishmentEntity replenishment) {
         if(replenishment == null) {
@@ -83,6 +100,7 @@ public class EntityMapper {
                 .expenditureRate(report.getExpenditureRate())
                 .leakProblem(report.getLeakProblem())
                 .advice(report.getAdvice())
+                .created_at(report.getCreatedAt())
                 .build();
     }
 }

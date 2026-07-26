@@ -1,12 +1,12 @@
 package dequelite.financemirror_backend.domain.dto;
 
 import dequelite.financemirror_backend.domain.report.ReportTypeEnum;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -26,4 +26,5 @@ public class ReportDto {
     private String expenditureRate;
     private String leakProblem;
     private String advice;
+    private LocalDateTime created_at;
 }
