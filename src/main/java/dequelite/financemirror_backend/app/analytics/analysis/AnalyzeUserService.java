@@ -9,6 +9,7 @@ import dequelite.financemirror_backend.domain.spending.CategoryEnum;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AnalyzeUserService {
     private final ProfileRepository profileRepository;
@@ -166,6 +168,10 @@ public class AnalyzeUserService {
 
     private String financeResult(int totalBalanceUpdates, int totalSpent) {
          int result = totalBalanceUpdates - totalSpent;
+         log.info("FINANCE RESULT: {}", result);
+        log.info("FINANCE totalBalanceUpdates: {}", totalBalanceUpdates);
+        log.info("FINANCE totalSpent: {}", totalSpent);
+
 
         return result > 0
                 ? "+ " + result
