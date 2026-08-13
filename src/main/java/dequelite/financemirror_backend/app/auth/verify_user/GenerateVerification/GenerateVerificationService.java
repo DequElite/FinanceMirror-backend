@@ -7,6 +7,7 @@ import dequelite.financemirror_backend.domain.user.UserRepository;
 import dequelite.financemirror_backend.domain.verification.VerificationEntity;
 import dequelite.financemirror_backend.domain.verification.VerificationRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ import java.util.HexFormat;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class GenerateVerificationService {
     private final PasswordEncoder passwordEncoder;
@@ -37,11 +39,24 @@ public class GenerateVerificationService {
     private String verificationLink;
 
     public void generateVerification(GenerateVerificationDto dto) {
+        log.info("Starting verification generation for userId={}, email={}",
+                dto.getUserId(), dto.getEmail());
+
         UserEntity user = this.userRepository
                 .findById(dto.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> {
+                    log.error("User not found: userId={}", dto.getUserId());
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND);
+                });
 
-        this.verificationRepo.findByUser(user).ifPresent(verificationRepo::delete);
+        log.info("User found: userId={}", user.getId());
+
+        this.verificationRepo.findByUser(user).ifPresent(verification -> {
+            log.info("Existing verification found, deleting it for userId={}", user.getId());
+            verificationRepo.delete(verification);
+        });
+
+        log.info("Generating verification token and code...");
 
         String token = this.generateVerificationTokensService.generateToken();
         String code = this.generateVerificationTokensService.generateCode();
@@ -51,6 +66,9 @@ public class GenerateVerificationService {
         LocalDateTime expiresAt = LocalDateTime.now()
                 .plus(Duration.ofMillis(verificationExpiration));
 
+        log.info("Saving verification entity: userId={}, expiresAt={}",
+                user.getId(), expiresAt);
+
         verificationRepo.save(VerificationEntity.builder()
                 .token(token)
                 .code(hashedCode)
@@ -59,13 +77,28 @@ public class GenerateVerificationService {
                 .user(user)
                 .build());
 
-        this.sendHtmlMainService.sendHtml(
-                dto.getEmail(),
-                "Verify account",
-                EmailVerificationHtml.html(
-                        verificationLink + token,
-                        code
-                )
-        );
+        log.info("Verification entity saved successfully");
+
+        String verificationUrl = verificationLink + token;
+
+        log.info("Sending verification email to {}", dto.getEmail());
+        log.info("Verification link configured: {}", verificationLink);
+
+        try {
+            this.sendHtmlMainService.sendHtml(
+                    dto.getEmail(),
+                    "Verify account",
+                    EmailVerificationHtml.html(
+                            verificationUrl,
+                            code
+                    )
+            );
+
+            log.info("Verification email sent successfully to {}", dto.getEmail());
+
+        } catch (Exception e) {
+            log.error("FAILED TO SEND VERIFICATION EMAIL to {}", dto.getEmail(), e);
+            throw e;
+        }
     }
 }
