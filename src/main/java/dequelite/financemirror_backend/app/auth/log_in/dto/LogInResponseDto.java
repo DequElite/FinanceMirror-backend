@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class LogInResponseDto {
-    private String accessToken;
-    private UserDto user;
+//    private String accessToken;
+//    private UserDto user;
+    private String message;
 }

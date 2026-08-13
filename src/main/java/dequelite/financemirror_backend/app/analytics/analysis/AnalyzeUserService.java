@@ -9,6 +9,7 @@ import dequelite.financemirror_backend.domain.spending.CategoryEnum;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,23 +19,23 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AnalyzeUserService {
     private final ProfileRepository profileRepository;
     private final SpendingRepository spendingRepository;
     private final ReplenishmentRepo replenishmentRepo;
 
-    public AnalyzedDto analyze(UUID userId){
-        Optional<ProfileEntity> foundProfile = this.profileRepository.findByUser_Id(userId);
-        if(foundProfile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        ProfileEntity profile = foundProfile.get();
+    public Optional<AnalyzedDto> analyze(UUID userId){
+        ProfileEntity profile = this.profileRepository
+                .findByUser_Id(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         List<SpendingEntity> spendings = this.spendings(profile.getId());
 
         List<ReplenishmentEntity> balanceUpdates = this.balanceUpdates(profile.getId());
+
+        if(spendings.isEmpty() || balanceUpdates.isEmpty()) return Optional.empty();
 
         long daysUntilEndOfMonth = this.daysUntilEndOfMonth();
 
@@ -52,17 +53,19 @@ public class AnalyzeUserService {
 
         String financeResult = this.financeResult(totalBalanceUpdates, totalSpent);
 
-        return AnalyzedDto.builder()
-                .totalSpent(totalSpent)
-                .expensiveCategory(expensiveCategory)
-                .spentPercentOfSalary(spentPrecentOfSalary)
-                .averageDailySpending(averageDailySpending)
-                .dailyLimit(dailyLimit)
-                .report_balance(profile.getBalance())
-                .profile(foundProfile.get())
-                .daysUntilSalary(this.daysUntilEndOfMonth())
-                .financeResult(financeResult)
-                .build();
+        return Optional.of(
+                AnalyzedDto.builder()
+                        .totalSpent(totalSpent)
+                        .expensiveCategory(expensiveCategory)
+                        .spentPercentOfSalary(spentPrecentOfSalary)
+                        .averageDailySpending(averageDailySpending)
+                        .dailyLimit(dailyLimit)
+                        .report_balance(profile.getBalance())
+                        .profile(profile)
+                        .daysUntilSalary(daysUntilEndOfMonth)
+                        .financeResult(financeResult)
+                        .build()
+        );
     }
 
     private long daysUntilEndOfMonth() {
@@ -165,16 +168,13 @@ public class AnalyzeUserService {
 
     private String financeResult(int totalBalanceUpdates, int totalSpent) {
          int result = totalBalanceUpdates - totalSpent;
+         log.info("FINANCE RESULT: {}", result);
+        log.info("FINANCE totalBalanceUpdates: {}", totalBalanceUpdates);
+        log.info("FINANCE totalSpent: {}", totalSpent);
 
-         String financeResult;
-         if(result < 0) {
-             financeResult = "- " + String.valueOf(result);
-         } else if (result > 0) {
-             financeResult = "+ " + String.valueOf(result);
-         } else {
-             financeResult = "0";
-         }
 
-         return financeResult;
+        return result > 0
+                ? "+ " + result
+                : String.valueOf(result);
     }
 }

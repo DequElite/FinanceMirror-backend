@@ -17,19 +17,18 @@ public class AuthUserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserEntity auth(String email, String password) {
-        Optional<UserEntity> user = this.userRepository.findByEmail(email);
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        UserEntity user = this.userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         boolean isPasswordValid = this.passwordEncoder.matches(
                 password,
-                user.get().getPassword()
+                user.getPassword()
         );
         if(!isPasswordValid) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        return user.get();
+        return user;
     }
 }

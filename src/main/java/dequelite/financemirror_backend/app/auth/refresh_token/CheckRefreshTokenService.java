@@ -35,13 +35,10 @@ public class CheckRefreshTokenService {
     }
 
     private UserEntity checkUserSessionAndReturn(UUID userId, String token){
-        Optional<UserEntity> foundUser = this.userRepository.findById(userId);
-        if(foundUser.isEmpty()) {
-            log.error("USER NOT FOUND: {}", userId);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        }
+        UserEntity user = this.userRepository
+                .findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
 
-        UserEntity user = foundUser.get();
         SessionEntity session = user.getSession();
 
         if(session == null) {

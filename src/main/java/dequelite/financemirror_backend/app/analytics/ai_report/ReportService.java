@@ -9,6 +9,7 @@ import dequelite.financemirror_backend.domain.report.ReportTypeEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,7 +21,11 @@ public class ReportService {
     private final ReportRepository reportRepository;
 
     public void createReport(UUID userId){
-        AnalyzedDto analyzedDto = this.analyzeUserService.analyze(userId);
+        Optional<AnalyzedDto> analyzed = this.analyzeUserService.analyze(userId);
+
+        if (analyzed.isEmpty()) return;
+
+        AnalyzedDto analyzedDto = analyzed.get();
 
         AiReportResponseDto aiReportResponseDto = aiReportService.ask(
                 analyzedDto.getProfile().getCurrency(),

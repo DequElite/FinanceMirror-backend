@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class SignUpResponseDto {
-    private UserDto user;
-    private String accessToken;
+    //private UserDto user;
+    //private String accessToken;
+    private String message;
 }

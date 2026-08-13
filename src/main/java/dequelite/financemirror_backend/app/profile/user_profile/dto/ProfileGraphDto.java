@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.profile.user_profile.dto;
 import dequelite.financemirror_backend.domain.dto.ReplenishmentDto;
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.dto.SpendingDto;
+import dequelite.financemirror_backend.domain.dto.SubscriptionDto;
 import lombok.*;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public class ProfileGraphDto {
     private List<ReportDto> reports;
 
     private List<ReplenishmentDto> replenishment;
+
+    private SubscriptionDto subscription;
 }

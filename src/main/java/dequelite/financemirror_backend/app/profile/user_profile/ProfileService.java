@@ -20,20 +20,12 @@ public class ProfileService {
     private final ProfileMapper mapper;
 
     public ProfileGraphDto getProfile(UUID userId) {
-        log.info("SERVICE getProfile START | userId={}", userId);
-
         Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(userId);
 
         if (profile.isEmpty()) {
-            log.warn("PROFILE NOT FOUND | userId={}", userId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile not found");
         }
 
-        log.info("PROFILE FOUND | userId={}", userId);
-
-        ProfileGraphDto dto = this.mapper.toDto(profile.get());
-
-        log.info("SERVICE getProfile END | userId={}", userId);
-        return dto;
+        return this.mapper.toDto(profile.get());
     }
 }

@@ -23,5 +23,6 @@ public enum CategoryEnum {
     SAVINGS,
     INVESTMENTS,
     DEBT,
-    MISCELLANEOUS
+    MISCELLANEOUS,
+    OTHER
 }

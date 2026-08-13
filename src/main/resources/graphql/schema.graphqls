@@ -27,6 +27,18 @@ type Report {
     expenditureRate: String
     leakProblem: String
     advice: String
+    created_at: String
+}
+
+
+type Subscription {
+    id: String
+    type: String
+    status: String
+    started_at: String
+    created_at: String
+    updated_at: String
+    expires_at: String
 }
 
 type Profile {
@@ -38,6 +50,7 @@ type Profile {
     spendings: [Spending]
     reports: [Report]
     replenishment: [Replenishment]
+    subscription: Subscription
 }
 
 type Dashboard {

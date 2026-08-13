@@ -24,12 +24,11 @@ public class DashboardService {
     private final ReportRepository reportRepository;
 
     public DashboardGraphDto dashboard(UUID userId) {
-        Optional<ProfileEntity> foundProfile = this.profileRepository.findByUser_Id(userId);
-        if(foundProfile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        ProfileEntity profile = this.profileRepository
+                .findByUser_Id(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        Optional<ReportEntity> latestReport = this.reportRepository.findTopByProfile_IdOrderByCreatedAtDesc(foundProfile.get().getId());
+        Optional<ReportEntity> latestReport = this.reportRepository.findTopByProfile_IdOrderByCreatedAtDesc(profile.getId());
 
         ReportDto reportDto = latestReport
                 .map(EntityMapper::toReportDto)

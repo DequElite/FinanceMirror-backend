@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.infra.config;
 
 import dequelite.financemirror_backend.infra.security.filters.AuthFilter.AuthFilter;
+import dequelite.financemirror_backend.infra.security.filters.SubscriptionFilter.SubscriptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.List;
 
 @Configuration
@@ -22,9 +25,11 @@ import java.util.List;
 public class SecurityConfig {
 
     private final AuthFilter authFilter;
+    private final SubscriptionFilter subscriptionFilter;
 
     @Value("${client.domain}")
     private String client;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,6 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/profile/payment/paypal/webhook").permitAll()
                         .requestMatchers("/graphiql/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
@@ -46,7 +52,8 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(subscriptionFilter, AuthFilter.class);
 
         return http.build();
     }
@@ -71,4 +78,8 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
+
+    @Bean
+    public SecureRandom random() {return new SecureRandom();}
+
 }
