@@ -1,35 +1,87 @@
 package dequelite.financemirror_backend.app.common.mail;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SendHtmlMainService {
-    private final JavaMailSender mailSender;
+
+    private final RestClient mailServiceRestClient;
+
+    @Value("${mail-service.api-key}")
+    private String apiKey;
+
+    @Value("${mail-service.sender.email}")
+    private String senderEmail;
+
+    @Value("${mail-service.sender.name}")
+    private String senderName;
 
     public void sendHtml(
-            String to,
+            String recipient,
             String subject,
             String html
     ) {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+        log.info("Starting email sending...");
+        log.info("Recipient: {}", recipient);
+        log.info("Subject: {}", subject);
+        log.info("Sender: {} <{}>", senderName, senderEmail);
+        log.debug("HTML content length: {} characters", html != null ? html.length() : 0);
+
+        Map<String, Object> body = Map.of(
+                "sender", Map.of(
+                        "name", senderName,
+                        "email", senderEmail
+                ),
+                "to", List.of(
+                        Map.of(
+                                "email", recipient
+                        )
+                ),
+                "subject", subject,
+                "htmlContent", html
+        );
 
         try {
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(html, true);
+            log.info("Sending email request to Brevo API...");
 
-            mailSender.send(mimeMessage);
+            var response = mailServiceRestClient
+                    .post()
+                    .uri("/v3/smtp/email")
+                    .header("api-key", apiKey)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(body)
+                    .retrieve()
+                    .toBodilessEntity();
 
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            log.info(
+                    "Email sent successfully. HTTP status: {}",
+                    response.getStatusCode()
+            );
+
+        } catch (Exception e) {
+
+            log.error(
+                    "FAILED TO SEND EMAIL. Recipient: {}, Subject: {}, Sender: {} <{}>",
+                    recipient,
+                    subject,
+                    senderName,
+                    senderEmail,
+                    e
+            );
+
+            throw e;
         }
     }
 }
