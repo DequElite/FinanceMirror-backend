@@ -30,8 +30,7 @@ public class SubscriptionFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        return path.startsWith("/auth")
-                || path.startsWith("/profile/payment");
+        return path.startsWith("/auth") || path.startsWith("/profile/payment");
     }
 
     @Override
@@ -40,6 +39,9 @@ public class SubscriptionFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        String path = request.getServletPath();
+        boolean isNonSubscriptionPlace = path.startsWith("/graphql");
 
         log.info("SubscriptionFilter: checking request {}", request.getRequestURI());
 
@@ -73,18 +75,17 @@ public class SubscriptionFilter extends OncePerRequestFilter {
                 subscription.getExpires_at()
         );
 
-        if (subscription.getStatus() == SubscriptionStatus.EXPIRED) {
-            log.info("SubscriptionFilter: subscription is already expired");
-            sendForbidden(response);
-            return;
-        }
+        boolean isExpired = subscription.getStatus() == SubscriptionStatus.EXPIRED;
 
-        if (subscription.getExpires_at().isBefore(LocalDate.now())) {
+        if (!isExpired && subscription.getExpires_at().isBefore(LocalDate.now())) {
             log.info("SubscriptionFilter: subscription expired today, updating status");
-
             subscription.setStatus(SubscriptionStatus.EXPIRED);
             subscriptionRepo.save(subscription);
+            isExpired = true;
+        }
 
+        if (isExpired && !isNonSubscriptionPlace) {
+            log.info("SubscriptionFilter: subscription is already expired");
             sendForbidden(response);
             return;
         }
