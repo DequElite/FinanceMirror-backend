@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.subscription.create_payment;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.create_payment;
 
 import com.paypal.sdk.controllers.OrdersController;
 import com.paypal.sdk.exceptions.ApiException;

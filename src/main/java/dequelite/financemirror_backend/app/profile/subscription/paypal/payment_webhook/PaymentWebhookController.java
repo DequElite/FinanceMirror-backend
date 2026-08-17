@@ -1,7 +1,5 @@
-package dequelite.financemirror_backend.app.profile.subscription.payment_webhook;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.payment_webhook;
 
-import dequelite.financemirror_backend.app.profile.subscription.payment_webhook.dto.PaymentWebhookRequestDto;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

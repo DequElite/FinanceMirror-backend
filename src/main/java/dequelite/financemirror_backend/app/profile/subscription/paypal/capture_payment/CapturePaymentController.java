@@ -1,6 +1,6 @@
-package dequelite.financemirror_backend.app.profile.subscription.capture_payment;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.capture_payment;
 
-import dequelite.financemirror_backend.app.profile.subscription.capture_payment.dto.CapturePaymentDto;
+import dequelite.financemirror_backend.app.profile.subscription.paypal.capture_payment.dto.CapturePaymentDto;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

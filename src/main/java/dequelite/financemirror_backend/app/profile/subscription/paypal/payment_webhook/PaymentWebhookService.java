@@ -1,9 +1,8 @@
-package dequelite.financemirror_backend.app.profile.subscription.payment_webhook;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.payment_webhook;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dequelite.financemirror_backend.app.profile.subscription.payment_webhook.dto.PaymentWebhookRequestDto;
+import dequelite.financemirror_backend.app.profile.subscription.paypal.payment_webhook.dto.PaymentWebhookRequestDto;
 import dequelite.financemirror_backend.domain.biling.BillingEntity;
 import dequelite.financemirror_backend.domain.biling.BillingRepo;
 import dequelite.financemirror_backend.domain.biling.BillingStatus;
@@ -25,9 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;

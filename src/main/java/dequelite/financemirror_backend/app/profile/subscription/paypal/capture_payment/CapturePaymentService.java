@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.subscription.capture_payment;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.capture_payment;
 
 import com.paypal.sdk.controllers.OrdersController;
 import com.paypal.sdk.http.response.ApiResponse;

@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.subscription.capture_payment.dto;
+package dequelite.financemirror_backend.app.profile.subscription.paypal.capture_payment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
