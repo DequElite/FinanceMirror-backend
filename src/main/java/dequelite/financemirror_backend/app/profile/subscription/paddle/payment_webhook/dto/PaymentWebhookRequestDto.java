@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.profile.subscription.payment_webhook.dto;
+package dequelite.financemirror_backend.app.profile.subscription.paddle.payment_webhook.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
