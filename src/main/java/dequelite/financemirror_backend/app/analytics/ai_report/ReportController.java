@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,9 +20,10 @@ public class ReportController {
 
     @PostMapping
     public ResponseEntity<Void> createReport(
-            @AuthenticationPrincipal TokenHeaderDTO user
+            @AuthenticationPrincipal TokenHeaderDTO user,
+            @RequestHeader("Accept-Language") String language
             ){
-        this.service.createReport(UUID.fromString(user.getSub()));
+        this.service.createReport(UUID.fromString(user.getSub()), language);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

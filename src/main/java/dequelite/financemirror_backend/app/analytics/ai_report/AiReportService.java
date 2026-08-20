@@ -17,6 +17,7 @@ public class AiReportService {
     private final AiService aiService;
 
     public AiReportResponseDto ask(
+            String language,
             String currency,
             String salary,
             String balance,
@@ -29,6 +30,7 @@ public class AiReportService {
             String financeResult
     ) {
         String prompt = FinancePrompts.financer(
+                language.isBlank() ? "en" : language,
                 currency,
                 salary,
                 balance,
@@ -50,7 +52,6 @@ public class AiReportService {
         }
 
         JsonNode data = response.data();
-
 
         return AiReportResponseDto.builder()
                 .expenditure_rate(
