@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.ai;
 public class FinancePrompts {
 
     public static String financer(
+            String language,
             String currency,
             String salary,
             String balance,
@@ -25,6 +26,15 @@ public class FinancePrompts {
                 - давать 2-3 коротких практических совета
                 - НЕ осуждать пользователя
                 - НЕ придумывать данные
+                
+                ВАЖНО:
+                - не осуждай пользователя
+                - не придумывай данные
+                - отвечай кратко
+                - используй только переданные данные
+                
+                КРИТИЧЕСКИ ВАЖНО:
+                Язык ответа: %s.
 
                 Данные пользователя:
                 - Валюта: %s
@@ -64,6 +74,7 @@ public class FinancePrompts {
                 Только JSON.
                 """
                 .formatted(
+                        language,
                         currency,
                         salary,
                         balance,

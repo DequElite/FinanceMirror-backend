@@ -20,7 +20,7 @@ public class ReportService {
 
     private final ReportRepository reportRepository;
 
-    public void createReport(UUID userId){
+    public void createReport(UUID userId, String language){
         Optional<AnalyzedDto> analyzed = this.analyzeUserService.analyze(userId);
 
         if (analyzed.isEmpty()) return;
@@ -28,6 +28,7 @@ public class ReportService {
         AnalyzedDto analyzedDto = analyzed.get();
 
         AiReportResponseDto aiReportResponseDto = aiReportService.ask(
+                language,
                 analyzedDto.getProfile().getCurrency(),
                 String.valueOf(analyzedDto.getProfile().getMonthSalary()),
                 String.valueOf(analyzedDto.getReport_balance()),
