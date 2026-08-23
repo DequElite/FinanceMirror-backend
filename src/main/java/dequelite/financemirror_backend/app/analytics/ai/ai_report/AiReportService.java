@@ -1,11 +1,11 @@
-package dequelite.financemirror_backend.app.analytics.ai_report;
+package dequelite.financemirror_backend.app.analytics.ai.ai_report;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import dequelite.financemirror_backend.app.ai.AiService;
 import dequelite.financemirror_backend.app.ai.FinancePrompts;
 import dequelite.financemirror_backend.app.ai.FinanceRole;
 import dequelite.financemirror_backend.app.ai.dto.AiResponseDto;
-import dequelite.financemirror_backend.app.analytics.ai_report.dto.AiReportResponseDto;
+import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AiReportResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

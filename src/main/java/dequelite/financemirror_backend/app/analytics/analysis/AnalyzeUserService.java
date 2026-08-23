@@ -1,6 +1,6 @@
 package dequelite.financemirror_backend.app.analytics.analysis;
 
-import dequelite.financemirror_backend.app.analytics.ai_report.dto.AnalyzedDto;
+import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AnalyzedDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;

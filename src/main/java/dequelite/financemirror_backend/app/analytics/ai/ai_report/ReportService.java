@@ -1,7 +1,7 @@
-package dequelite.financemirror_backend.app.analytics.ai_report;
+package dequelite.financemirror_backend.app.analytics.ai.ai_report;
 
-import dequelite.financemirror_backend.app.analytics.ai_report.dto.AiReportResponseDto;
-import dequelite.financemirror_backend.app.analytics.ai_report.dto.AnalyzedDto;
+import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AiReportResponseDto;
+import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AnalyzedDto;
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.report.ReportRepository;

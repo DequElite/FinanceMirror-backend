@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.analytics.ai_report;
+package dequelite.financemirror_backend.app.analytics.ai.ai_report;
 
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/analytics/ai-report")
+@RequestMapping("/analytics/ai/report")
 @RequiredArgsConstructor
 public class ReportController {
     private final ReportService service;

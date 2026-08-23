@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.analytics.ai_report.dto;
+package dequelite.financemirror_backend.app.analytics.ai.ai_report.dto;
 
 import lombok.Builder;
 import lombok.Getter;
