@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.auth.verify_user.verify;
 import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyRequestDto;
 import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyResponseDto;
 import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyServiceResponseDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ public class VerifyController {
     private String cookieDomain;
 
     @PostMapping
-    public ResponseEntity<VerifyResponseDto> verify(
+    public ResponseEntity<ApiResponse<VerifyResponseDto>> verify(
             @Valid @RequestBody VerifyRequestDto body
             ) {
         VerifyServiceResponseDto responseDto =
@@ -57,10 +58,13 @@ public class VerifyController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(
-                        VerifyResponseDto.builder()
-                                .accessToken(responseDto.getAccessToken())
-                                .user(responseDto.getUser())
-                                .build()
+                        ApiResponse.success(
+                                "Successfully verifyed",
+                                VerifyResponseDto.builder()
+                                        .accessToken(responseDto.getAccessToken())
+                                        .user(responseDto.getUser())
+                                        .build()
+                        )
                 );
     }
 }

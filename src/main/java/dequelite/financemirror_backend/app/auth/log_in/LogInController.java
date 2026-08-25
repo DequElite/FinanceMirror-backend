@@ -26,13 +26,13 @@ public class LogInController {
     private final LogInService service;
 
     @PostMapping
-    private ResponseEntity<ApiResponse<Void>> logIn(
+    public ResponseEntity<ApiResponse<Void>> logIn(
             @Valid @RequestBody LogInRequestDto body
             ) {
           this.service.logIn(body);
          return ResponseEntity.ok(
                  ApiResponse.success(
-                         "Verification sent",
+                         "Logged in successfully. Verification sent",
                          null
                  )
          );

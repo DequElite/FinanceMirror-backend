@@ -1,20 +1,19 @@
 package dequelite.financemirror_backend.app.auth.refresh_token;
 
 import dequelite.financemirror_backend.app.common.jwt.JwtService;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.session.SessionEntity;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import dequelite.financemirror_backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -37,51 +36,46 @@ public class CheckRefreshTokenService {
     private UserEntity checkUserSessionAndReturn(UUID userId, String token){
         UserEntity user = this.userRepository
                 .findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+                .orElseThrow(() -> new ApiException(ErrorCode.INVALID_REFRESH_TOKEN));
 
         SessionEntity session = user.getSession();
 
         if(session == null) {
-            log.error("SESSION NULL for user: {}", userId);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         String hashedRefreshToken = session.getRefreshToken();
         LocalDateTime refreshTokenExpiration = session.getRefreshTokenExpiresAt();
 
-        log.info("TOKEN MATCHES CHECK...");
         boolean isTokenValid = this.passwordEncoder.matches(token, hashedRefreshToken);
-        log.info("TOKEN VALID: {}", isTokenValid);
 
         if(!isTokenValid) {
-            log.error("TOKEN INVALID");
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         if(LocalDateTime.now().isAfter(refreshTokenExpiration)) {
-            log.error("TOKEN EXPIRED: {}", refreshTokenExpiration);
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         return user;
     }
     private String checkJwtAndReturnSub(String token) {
         if(token == null || token.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         Map<String, Object> tokenDecodedFromJwt;
         try {
             tokenDecodedFromJwt = this.jwtService.verifyToken(token, refreshTokenSecret);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "REFRESH_TOKEN_UNVALID");
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         if(
                 tokenDecodedFromJwt.isEmpty() ||
                         !tokenDecodedFromJwt.containsKey("sub")
         ){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ApiException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         return tokenDecodedFromJwt.get("sub").toString();

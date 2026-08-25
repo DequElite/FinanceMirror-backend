@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.auth.password_recovery.reset_password;
 
 import dequelite.financemirror_backend.app.auth.password_recovery.reset_password.dto.ResetPasswordRequestDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,16 @@ public class ResetPasswordController {
     private final ResetPasswordService service;
 
     @PostMapping
-    public ResponseEntity<String> resetPassword(
+    public ResponseEntity<ApiResponse<Void>> resetPassword(
             @Valid @RequestBody ResetPasswordRequestDto body
     ) {
         this.service.resetPassword(body);
 
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Successfully reset",
+                        null
+                )
+        );
     }
 }

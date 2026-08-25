@@ -2,6 +2,7 @@ package dequelite.financemirror_backend.app.auth.refresh_token;
 
 import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenResponseDto;
 import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenServiceResponseDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ public class RefreshTokenController {
     private String cookieDomain;
 
     @PostMapping
-    public ResponseEntity<RefreshTokenResponseDto> refreshToken(
+    public ResponseEntity<ApiResponse<RefreshTokenResponseDto>> refreshToken(
             @CookieValue(name = "refreshToken") String refreshToken
     ) {
         log.info("REFRESH STARTED: {}", refreshToken);
@@ -56,9 +57,12 @@ public class RefreshTokenController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(
-                        RefreshTokenResponseDto.builder()
-                                .accessToken(responseDto.getAccessToken())
-                                .build()
+                        ApiResponse.success(
+                                "Successfully refreshed",
+                                RefreshTokenResponseDto.builder()
+                                        .accessToken(responseDto.getAccessToken())
+                                        .build()
+                        )
                 );
     }
 

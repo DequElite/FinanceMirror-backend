@@ -1,6 +1,8 @@
 package dequelite.financemirror_backend.app.auth.sign_up;
 
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpRequestDto;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionEntity;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionStatus;
@@ -30,7 +32,7 @@ public class RegisterUserService {
     public UserEntity createUser(SignUpRequestDto body) {
         Optional<UserEntity> userEntity = this.userRepository.findByEmail(body.getEmail());
         if(userEntity.isPresent()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ApiException(ErrorCode.EMAIL_ALREADY_USED);
         }
 
         ProfileEntity profile = ProfileEntity.builder()

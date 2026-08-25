@@ -1,6 +1,8 @@
 package dequelite.financemirror_backend.app.auth.password_recovery.reset_password;
 
 import dequelite.financemirror_backend.app.auth.password_recovery.reset_password.dto.ResetPasswordRequestDto;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.password_recovery.PasswordRecoveryEntity;
 import dequelite.financemirror_backend.domain.password_recovery.PasswordRecoveryRepo;
 import dequelite.financemirror_backend.domain.user.UserEntity;
@@ -38,7 +40,7 @@ public class ResetPasswordService {
                         .findByToken(
                                 hashToken
                         )
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                        .orElseThrow(() -> new ApiException(ErrorCode.PASSWORD_RECOVERY_NOT_FOUND));
 
         this.checkExpiration(passwordRecoveryEntity.getExpiresAt(), passwordRecoveryEntity);
 
@@ -58,7 +60,7 @@ public class ResetPasswordService {
     private void checkExpiration(LocalDateTime expiresAt, PasswordRecoveryEntity passwordRecovery){
         if (expiresAt.isBefore(LocalDateTime.now())) {
             this.passwordRecoveryRepo.delete(passwordRecovery);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password Recovery has expired");
+            throw new ApiException(ErrorCode.PASSWORD_RECOVERY_EXPIRED);
         }
     }
 

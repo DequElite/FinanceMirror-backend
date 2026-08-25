@@ -3,6 +3,7 @@ package dequelite.financemirror_backend.app.auth.sign_up;
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpRequestDto;
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpResponseDto;
 import dequelite.financemirror_backend.app.auth.sign_up.dto.SignUpServiceResponseDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +27,16 @@ public class SignUpController {
     private final SignUpService service;
 
     @PostMapping
-    public ResponseEntity<SignUpResponseDto> signUp(
+    public ResponseEntity<ApiResponse<Void>> signUp(
             @Valid @RequestBody SignUpRequestDto body
             ){
           this.service.signUp(body);
 
-          return ResponseEntity.ok()
-                  .body(
-                          SignUpResponseDto.builder().message("Verification sent").build()
-                  );
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Signed Up in successfully. Verification sent",
+                        null
+                )
+        );
     }
 }

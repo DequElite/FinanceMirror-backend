@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.auth.password_recovery.forgot_password;
 
 import dequelite.financemirror_backend.app.auth.password_recovery.forgot_password.dto.ForgotPasswordRequestDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +17,16 @@ public class ForgotPasswordController {
     private final ForgotPasswordService service;
 
     @PostMapping
-    public ResponseEntity<String> forgotPassword(
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(
             @Valid @RequestBody ForgotPasswordRequestDto body
             ) {
         this.service.sendRecoveryMail(body);
 
-        return ResponseEntity.ok("If user exists, email sent");
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "If user exists, email sent",
+                        null
+                )
+        );
     }
 }
