@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.spending.create_spending;
 
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import dequelite.financemirror_backend.app.spending.create_spending.dto.CreateSpendingRequestDto;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import jakarta.validation.Valid;
@@ -21,16 +22,18 @@ public class CreateSpendingController {
     private final CreateSpendingService service;
 
     @PostMapping
-    public ResponseEntity<Void> createSpending(
+    public ResponseEntity<ApiResponse<Void>> createSpending(
             @AuthenticationPrincipal TokenHeaderDTO user,
             @Valid @RequestBody CreateSpendingRequestDto body
             ) {
-        log.info("createSpending cont START: {}", user);
         this.service.createSpending(
                 body,
                 user
         );
-        log.info("createSpending cont END");
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Successfully created", null
+                )
+        );
     }
 }

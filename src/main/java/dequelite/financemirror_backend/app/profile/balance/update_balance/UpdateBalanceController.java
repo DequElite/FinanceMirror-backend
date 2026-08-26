@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.profile.balance.update_balance;
 
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import dequelite.financemirror_backend.app.profile.balance.update_balance.dto.UpdateBalanceRequestDto;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import jakarta.validation.Valid;
@@ -21,11 +22,15 @@ public class UpdateBalanceController {
     private final UpdateBalanceService service;
 
     @PostMapping
-    public ResponseEntity<Void> updateBalance(
+    public ResponseEntity<ApiResponse<Void>> updateBalance(
             @Valid @RequestBody UpdateBalanceRequestDto body,
             @AuthenticationPrincipal TokenHeaderDTO user
             ){
         this.service.updateBalance(body, UUID.fromString(user.getSub()));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Successfully updated", null
+                )
+        );
     }
 }

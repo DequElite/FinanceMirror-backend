@@ -20,7 +20,38 @@ public enum ErrorCode {
     CIBI_ANALYSIS_DATA_NOT_FOUND(
             HttpStatus.BAD_REQUEST.value(),
         "Not enough financial data for analysis"
-                );
+                ),
+    SUBSCRIPTION_ALREADY_ACTIVE(
+            HttpStatus.BAD_REQUEST.value(),
+            "Subscription is already active"
+    ),
+    PADDLE_PAYMENT_CREATION_FAILED(
+            HttpStatus.BAD_GATEWAY.value(),
+            "Payment provider request failed"
+    ),
+
+    PADDLE_INVALID_RESPONSE(
+            HttpStatus.BAD_GATEWAY.value(),
+            "Invalid payment provider response"
+    ),
+    PADDLE_WEBHOOK_INVALID_SIGNATURE(
+            HttpStatus.FORBIDDEN.value(),
+            "Invalid webhook signature"
+    ),
+
+    PADDLE_WEBHOOK_INVALID_DATA(
+            HttpStatus.BAD_REQUEST.value(),
+            "Invalid webhook data"
+    ),
+
+    PADDLE_WEBHOOK_PROCESSING_FAILED(
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "Webhook processing failed"
+    ),
+    SPENDING_NOT_FOUND(
+            HttpStatus.NOT_FOUND.value(),
+            "Spending not found"
+    );
 
     private final Integer status;
     private final String message;

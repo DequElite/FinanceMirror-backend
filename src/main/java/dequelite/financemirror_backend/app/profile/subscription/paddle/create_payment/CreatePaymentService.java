@@ -3,9 +3,11 @@ package dequelite.financemirror_backend.app.profile.subscription.paddle.create_p
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paypal.sdk.controllers.OrdersController;
-import com.paypal.sdk.exceptions.ApiException;
+
 import com.paypal.sdk.http.response.ApiResponse;
 import com.paypal.sdk.models.*;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.app.profile.subscription.check_user_subscription_service.CheckUserSubscriptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -28,7 +26,6 @@ public class CreatePaymentService {
 
     private final CheckUserSubscriptionService checkUserSubscriptionService;
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
     private final String paddleBaseUrl;
 
     @Value("${paddle.api-key}")
@@ -82,9 +79,8 @@ public class CreatePaymentService {
 
             if (responseBody == null || !responseBody.has("data")) {
                 log.error("Paddle response missing 'data' field");
-                throw new ResponseStatusException(
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Invalid Paddle response"
+                throw new ApiException(
+                        ErrorCode.PADDLE_INVALID_RESPONSE
                 );
             }
 
@@ -97,9 +93,9 @@ public class CreatePaymentService {
         } catch (Exception e) {
             log.error("========== PADDLE API EXCEPTION ==========");
             log.error("Message: {}", e.getMessage(), e);
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "Paddle API Error"
+
+            throw new ApiException(
+                    ErrorCode.PADDLE_PAYMENT_CREATION_FAILED
             );
         }
     }

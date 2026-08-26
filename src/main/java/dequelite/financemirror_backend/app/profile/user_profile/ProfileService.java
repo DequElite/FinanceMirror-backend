@@ -1,5 +1,7 @@
 package dequelite.financemirror_backend.app.profile.user_profile;
 
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.app.profile.user_profile.dto.ProfileGraphDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
@@ -23,7 +25,7 @@ public class ProfileService {
         Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(userId);
 
         if (profile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Profile not found");
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
 
         return this.mapper.toDto(profile.get());

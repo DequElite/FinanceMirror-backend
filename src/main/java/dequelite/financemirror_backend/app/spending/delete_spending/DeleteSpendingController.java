@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.spending.delete_spending;
 
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class DeleteSpendingController {
     private final DeleteSpendingService service;
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSpending(
+    public ResponseEntity<ApiResponse<Void>> deleteSpending(
             @PathVariable String id,
             @AuthenticationPrincipal TokenHeaderDTO user
             ) {
@@ -26,7 +27,11 @@ public class DeleteSpendingController {
                 UUID.fromString(user.getSub()),
                 UUID.fromString(id)
         );
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Successfully deleted", null
+                )
+        );
     }
 
 }

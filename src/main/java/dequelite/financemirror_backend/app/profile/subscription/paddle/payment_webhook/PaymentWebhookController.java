@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.profile.subscription.paddle.payment_webhook;
 
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,16 @@ public class PaymentWebhookController {
     private final PaymentWebhookService service;
 
     @PostMapping
-    public ResponseEntity<String> webhook(
+    public ResponseEntity<ApiResponse<Void>> webhook(
             @RequestHeader("Paddle-Signature") String paddleSignature,
             @RequestBody String rawBody
     ) {
         log.info("PaymentWebhookController webhook started");
         this.service.completeSubscription(paddleSignature, rawBody);
-        return ResponseEntity.ok("COMPLETED SUCCESSFULLY");
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "COMPLETED SUCCESSFULLY", null
+                )
+        );
     }
 }

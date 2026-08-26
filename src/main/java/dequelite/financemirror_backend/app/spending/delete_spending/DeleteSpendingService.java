@@ -2,6 +2,8 @@ package dequelite.financemirror_backend.app.spending.delete_spending;
 
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
 import dequelite.financemirror_backend.app.analytics.auto_report.AutoReportService;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
@@ -30,7 +32,7 @@ public class DeleteSpendingService {
     ) {
         Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(userId);
         if(profile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
 
         Optional<SpendingEntity> spending = this.spendingRepository.findByIdAndProfile_Id(
@@ -38,7 +40,7 @@ public class DeleteSpendingService {
                 profile.get().getId()
         );
         if(spending.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ApiException(ErrorCode.SPENDING_NOT_FOUND);
         }
 
         profile.get().setBalance(profile.get().getBalance() + spending.get().getPrice());

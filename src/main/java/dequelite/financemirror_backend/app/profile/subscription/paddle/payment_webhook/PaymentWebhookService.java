@@ -2,6 +2,8 @@ package dequelite.financemirror_backend.app.profile.subscription.paddle.payment_
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.biling.BillingEntity;
 import dequelite.financemirror_backend.domain.biling.BillingRepo;
 import dequelite.financemirror_backend.domain.biling.BillingStatus;
@@ -14,10 +16,8 @@ import dequelite.financemirror_backend.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -52,7 +52,9 @@ public class PaymentWebhookService {
 
         if (!isValid) {
             log.warn("Webhook signature is INVALID");
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            throw new ApiException(
+                    ErrorCode.PADDLE_WEBHOOK_INVALID_SIGNATURE
+            );
         }
 
         log.info("Webhook signature verified successfully");
@@ -92,7 +94,9 @@ public class PaymentWebhookService {
 
         } catch (Exception e) {
             log.error("Webhook processing failed", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApiException(
+                    ErrorCode.PADDLE_WEBHOOK_PROCESSING_FAILED
+            );
         }
     }
 
@@ -110,9 +114,8 @@ public class PaymentWebhookService {
 
         if (userIdRaw == null || userIdRaw.isBlank()) {
             log.error("custom_data.userId is missing");
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Missing custom_data.userId in webhook"
+            throw new ApiException(
+                    ErrorCode.PADDLE_WEBHOOK_INVALID_DATA
             );
         }
 
@@ -121,7 +124,9 @@ public class PaymentWebhookService {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> {
                     log.error("User not found: {}", userId);
-                    return new ResponseStatusException(HttpStatus.NOT_FOUND);
+                    return new ApiException(
+                            ErrorCode.USER_NOT_FOUND
+                    );
                 });
 
         log.info("User found: {}", user.getId());
@@ -197,7 +202,7 @@ public class PaymentWebhookService {
 
         if (foundBilling.isPresent()) {
             log.warn("Billing already exists. Skip webhook.");
-            throw new ResponseStatusException(HttpStatus.OK);
+            return;
         }
 
         UserEntity user = this.findUserFromWebhook(data);

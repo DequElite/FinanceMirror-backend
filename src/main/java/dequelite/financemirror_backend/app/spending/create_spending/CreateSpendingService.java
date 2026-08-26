@@ -2,6 +2,8 @@ package dequelite.financemirror_backend.app.spending.create_spending;
 
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
 import dequelite.financemirror_backend.app.analytics.auto_report.AutoReportService;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.app.spending.create_spending.dto.CreateSpendingRequestDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
@@ -12,10 +14,8 @@ import dequelite.financemirror_backend.domain.user.UserRepository;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +36,7 @@ public class CreateSpendingService {
         log.info("SERVICE createSpending --START: {}", user);
         Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(UUID.fromString(user.getSub()));
         if(profile.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
 
         profile.get().setBalance(profile.get().getBalance() - body.getPrice());
@@ -46,10 +46,7 @@ public class CreateSpendingService {
         try {
             category = CategoryEnum.valueOf(body.getCategory().toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Invalid category"
-            );
+            throw new ApiException(ErrorCode.INVALID_CREDENTIALS);
         }
 
         SpendingEntity newSpending = SpendingEntity.builder()
