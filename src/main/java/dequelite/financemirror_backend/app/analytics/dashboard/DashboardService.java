@@ -2,15 +2,15 @@ package dequelite.financemirror_backend.app.analytics.dashboard;
 
 import dequelite.financemirror_backend.app.analytics.dashboard.dto.DashboardGraphDto;
 import dequelite.financemirror_backend.app.common.mapper.EntityMapper;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.dto.ReportDto;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
 import dequelite.financemirror_backend.domain.report.ReportRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -26,7 +26,7 @@ public class DashboardService {
     public DashboardGraphDto dashboard(UUID userId) {
         ProfileEntity profile = this.profileRepository
                 .findByUser_Id(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
 
         Optional<ReportEntity> latestReport = this.reportRepository.findTopByProfile_IdOrderByCreatedAtDesc(profile.getId());
 

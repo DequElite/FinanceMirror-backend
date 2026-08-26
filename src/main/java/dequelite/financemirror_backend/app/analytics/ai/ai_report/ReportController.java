@@ -1,5 +1,6 @@
 package dequelite.financemirror_backend.app.analytics.ai.ai_report;
 
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,16 @@ public class ReportController {
     private final ReportService service;
 
     @PostMapping
-    public ResponseEntity<Void> createReport(
+    public ResponseEntity<ApiResponse<Void>> createReport(
             @AuthenticationPrincipal TokenHeaderDTO user,
             @RequestHeader("Accept-Language") String language
             ){
         this.service.createReport(UUID.fromString(user.getSub()), language);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Successfully created",
+                        null
+                )
+        );
     }
 }

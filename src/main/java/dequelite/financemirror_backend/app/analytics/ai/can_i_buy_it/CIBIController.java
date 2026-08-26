@@ -4,6 +4,7 @@ package dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it;
 import dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it.dto.CIBIRequestDto;
 import dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it.dto.CIBIResponseDto;
 import dequelite.financemirror_backend.app.auth.log_in.dto.LogInResponseDto;
+import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import dequelite.financemirror_backend.infra.security.processors.AuthProcessor.TokenHeaderDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CIBIController {
     private final CIBIService service;
 
     @PostMapping
-    public ResponseEntity<CIBIResponseDto> createReport(
+    public ResponseEntity<ApiResponse<CIBIResponseDto>> createReport(
             @AuthenticationPrincipal TokenHeaderDTO user,
             @RequestHeader("Accept-Language") String language,
             @Valid @RequestBody CIBIRequestDto body
@@ -31,9 +32,11 @@ public class CIBIController {
                 UUID.fromString(user.getSub()),
                 body
         );
-        return ResponseEntity.ok()
-                .body(
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "Success",
                         responseDto
-                );
+                )
+        );
     }
 }

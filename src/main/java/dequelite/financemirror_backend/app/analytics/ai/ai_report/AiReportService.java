@@ -6,10 +6,10 @@ import dequelite.financemirror_backend.app.ai.FinancePrompts;
 import dequelite.financemirror_backend.app.ai.FinanceRole;
 import dequelite.financemirror_backend.app.ai.dto.AiResponseDto;
 import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AiReportResponseDto;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class AiReportService {
                 prompt
         );
         if(!response.success()) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         JsonNode data = response.data();

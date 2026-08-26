@@ -6,10 +6,10 @@ import dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it.dto.CIBIReq
 import dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it.dto.CIBIResponseDto;
 import dequelite.financemirror_backend.app.analytics.ai.can_i_buy_it.dto.CIBI_AiReportResponseDto;
 import dequelite.financemirror_backend.app.analytics.analysis.AnalyzeUserService;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -61,7 +61,7 @@ public class CIBIService {
     private AnalyzedDto analyzedDto(UUID userId) {
         Optional<AnalyzedDto> analyzed = this.analyzeUserService.analyze(userId);
 
-        if (analyzed.isEmpty()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "NOT_ENOUG_DATA");
+        if (analyzed.isEmpty()) throw new ApiException(ErrorCode.CIBI_ANALYSIS_DATA_NOT_FOUND);
 
         return analyzed.get();
     }

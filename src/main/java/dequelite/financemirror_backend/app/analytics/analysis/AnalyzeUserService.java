@@ -1,6 +1,8 @@
 package dequelite.financemirror_backend.app.analytics.analysis;
 
 import dequelite.financemirror_backend.app.analytics.ai.ai_report.dto.AnalyzedDto;
+import dequelite.financemirror_backend.app.common.response.ApiException;
+import dequelite.financemirror_backend.app.common.response.ErrorCode;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileRepository;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
@@ -10,9 +12,7 @@ import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -29,7 +29,7 @@ public class AnalyzeUserService {
     public Optional<AnalyzedDto> analyze(UUID userId){
         ProfileEntity profile = this.profileRepository
                 .findByUser_Id(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
 
         List<SpendingEntity> spendings = this.spendings(profile.getId());
 
