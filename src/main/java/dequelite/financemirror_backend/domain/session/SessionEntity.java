@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,19 +22,28 @@ public class SessionEntity {
     @Column(nullable = false, unique = true, updatable = false)
     private UUID id;
 
-    @OneToOne(mappedBy = "session", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private UserEntity user;
 
-    @Column(name = "refresh_token", nullable = false, unique = false, updatable = true)
+    @Column(name = "refresh_token", nullable = false, unique = false, updatable = false)
     private String refreshToken;
 
-    @Column(name = "refresh_token_expires_at", nullable = false, unique = false, updatable = true)
-    private LocalDateTime refreshTokenExpiresAt;
-
-    @Column(name = "access_token_id", nullable = true, unique = true, updatable = true)
+    @Column(name = "access_token_id", nullable = true, unique = true, updatable = false)
     private String accessTokenId;
 
-    @Column(name = "latest_login", nullable = false, unique = false, updatable = true)
-    private LocalDateTime latestLogin;
+    @Column(name = "expires_at", nullable = false, unique = false, updatable = false)
+    private LocalDateTime expiresAt;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "ip_address", unique = false, nullable = false, updatable = false)
+    private String ipAddress;
+
+    @Column(name = "user_agent", unique = false, nullable = false, updatable = false)
+    private String userAgent;
+
 }
