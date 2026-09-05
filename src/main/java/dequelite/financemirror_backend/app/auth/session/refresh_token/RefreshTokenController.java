@@ -1,7 +1,7 @@
-package dequelite.financemirror_backend.app.auth.refresh_token;
+package dequelite.financemirror_backend.app.auth.session.refresh_token;
 
-import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenResponseDto;
-import dequelite.financemirror_backend.app.auth.refresh_token.dto.RefreshTokenServiceResponseDto;
+import dequelite.financemirror_backend.app.auth.session.refresh_token.dto.RefreshTokenResponseDto;
+import dequelite.financemirror_backend.app.auth.session.refresh_token.dto.RefreshTokenServiceResponseDto;
 import dequelite.financemirror_backend.app.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/auth/refresh-token")
+@RequestMapping("/auth/session/refresh-token")
 @RequiredArgsConstructor
 @Slf4j
 public class RefreshTokenController {
@@ -30,7 +30,7 @@ public class RefreshTokenController {
     @Value("${app.cookie.same-site}")
     private String cookieSameSite;
 
-    @Value("${app.cookie.domain:}")
+    @Value("${app.cookie.domain}")
     private String cookieDomain;
 
     @PostMapping
@@ -46,7 +46,7 @@ public class RefreshTokenController {
                 .path("/")
                 .maxAge(Duration.between(
                         LocalDateTime.now(),
-                        responseDto.getRefreshTokenExpiration()
+                        responseDto.getExpiresAt()
                 ).getSeconds())
                 .sameSite(cookieSameSite)
                 .domain(cookieDomain.isBlank() ? null : cookieDomain)

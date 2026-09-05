@@ -34,7 +34,7 @@ public class SessionService {
 
         TokenPairDto tokenPairDto = this.tokenGenerationService.generateTokenPair(user, sessionId.toString());
 
-        session.setRefreshToken(tokenPairDto.getRefreshToken());
+        session.setRefreshToken(tokenPairDto.getHashedRefreshToken());
         session.setAccessTokenId(tokenPairDto.getAccessTokenId());
         session.setExpiresAt(tokenPairDto.getExpiresAt());
 
@@ -46,5 +46,21 @@ public class SessionService {
     @Transactional
     public void deleteExpiredSessions(UserEntity user) {
         this.sessionRepository.deleteExpiredSessions(user.getId(), LocalDateTime.now());
+    }
+
+    @Transactional
+    public TokenPairDto updateSession(SessionEntity session) {
+        UUID sessionId = session.getId();
+        UserEntity user = session.getUser();
+
+        TokenPairDto tokenPairDto = this.tokenGenerationService.generateTokenPair(user, sessionId.toString());
+
+        session.setAccessTokenId(tokenPairDto.getAccessTokenId());
+        session.setRefreshToken(tokenPairDto.getHashedRefreshToken());
+        session.setExpiresAt(tokenPairDto.getExpiresAt());
+
+        sessionRepository.save(session);
+
+        return tokenPairDto;
     }
 }

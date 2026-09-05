@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.auth.refresh_token.dto;
+package dequelite.financemirror_backend.app.auth.session.refresh_token.dto;
 
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import lombok.Builder;
@@ -15,5 +15,5 @@ import java.time.LocalDateTime;
 public class RefreshTokenServiceResponseDto {
     private String accessToken;
     private String refreshToken;
-    private LocalDateTime refreshTokenExpiration;
+    private LocalDateTime expiresAt;
 }

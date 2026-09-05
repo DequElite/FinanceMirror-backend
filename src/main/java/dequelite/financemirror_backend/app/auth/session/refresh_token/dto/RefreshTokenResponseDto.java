@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.auth.refresh_token.dto;
+package dequelite.financemirror_backend.app.auth.session.refresh_token.dto;
 
 import lombok.Builder;
 import lombok.Getter;
