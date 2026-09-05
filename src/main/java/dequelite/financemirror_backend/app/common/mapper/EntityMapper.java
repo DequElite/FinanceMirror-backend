@@ -4,13 +4,35 @@ import dequelite.financemirror_backend.domain.dto.*;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
+import dequelite.financemirror_backend.domain.session.SessionEntity;
 import dequelite.financemirror_backend.domain.spending.SpendingEntity;
 import dequelite.financemirror_backend.domain.subscription.SubscriptionEntity;
 import dequelite.financemirror_backend.domain.user.UserEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class EntityMapper {
+
+    public static List<SessionDto> mapSessionDto(List<SessionEntity> sessionEntities) {
+        return sessionEntities
+                .stream().map(EntityMapper::toSessionDto).toList();
+    }
+
+    public static SessionDto toSessionDto(SessionEntity session) {
+        if(session == null) {
+            return null;
+        }
+
+        return SessionDto.builder()
+                .id(session.getId().toString())
+                .expiresAt(session.getExpiresAt())
+                .createdAt(session.getCreatedAt())
+                .ipAddress(session.getIpAddress())
+                .userAgent(session.getUserAgent())
+                .build();
+    }
 
     public static SubscriptionDto toSubscriptionDto(SubscriptionEntity subscription) {
         if (subscription == null) {

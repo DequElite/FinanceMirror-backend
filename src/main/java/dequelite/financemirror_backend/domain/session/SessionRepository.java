@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -18,4 +19,9 @@ public interface SessionRepository extends JpaRepository<SessionEntity, UUID> {
                 AND s.expiresAt < :now
     """)
     void deleteExpiredSessions(UUID userId, LocalDateTime now);
+
+    List<SessionEntity> findByUser_IdAndExpiresAtAfterOrderByExpiresAtAsc(
+            UUID userId,
+            LocalDateTime now
+    );
 }
