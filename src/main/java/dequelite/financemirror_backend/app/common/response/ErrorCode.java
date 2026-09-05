@@ -51,6 +51,14 @@ public enum ErrorCode {
     SPENDING_NOT_FOUND(
             HttpStatus.NOT_FOUND.value(),
             "Spending not found"
+    ),
+    SESSION_NOT_FOUNT(
+            HttpStatus.NOT_FOUND.value(),
+            "Session not found"
+    ),
+    SESSION_FORBIDDEN(
+            HttpStatus.FORBIDDEN.value(),
+            "Session forbidden"
     );
 
     private final Integer status;
