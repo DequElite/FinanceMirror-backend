@@ -1,4 +1,4 @@
-package dequelite.financemirror_backend.app.auth.session.refresh_token;
+package dequelite.financemirror_backend.app.auth.session.CheckRefreshTokenService;
 
 import dequelite.financemirror_backend.app.auth.session.refresh_token.dto.RefreshTokenPayloadDto;
 import dequelite.financemirror_backend.app.common.jwt.JwtService;

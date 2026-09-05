@@ -1,13 +1,11 @@
 package dequelite.financemirror_backend.app.auth.session.refresh_token;
 
+import dequelite.financemirror_backend.app.auth.session.CheckRefreshTokenService.CheckRefreshTokenService;
 import dequelite.financemirror_backend.app.auth.session.refresh_token.dto.RefreshTokenServiceResponseDto;
 import dequelite.financemirror_backend.app.common.session.SessionService;
-import dequelite.financemirror_backend.app.common.token_pair.TokenGenerationService;
 import dequelite.financemirror_backend.app.common.token_pair.dto.TokenPairDto;
 import dequelite.financemirror_backend.domain.session.SessionEntity;
-import dequelite.financemirror_backend.domain.user.UserEntity;
 import lombok.RequiredArgsConstructor;
-import org.antlr.runtime.Token;
 import org.springframework.stereotype.Service;
 
 @Service
