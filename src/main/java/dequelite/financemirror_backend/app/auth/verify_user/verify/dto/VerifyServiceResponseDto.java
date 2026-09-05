@@ -13,6 +13,6 @@ import java.time.LocalDateTime;
 public class VerifyServiceResponseDto {
     private String accessToken;
     private String refreshToken;
-    private LocalDateTime refreshTokenExpiration;
+    private LocalDateTime expiresAt;
     private UserDto user;
 }

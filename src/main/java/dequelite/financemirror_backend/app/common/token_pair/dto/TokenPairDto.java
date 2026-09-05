@@ -14,6 +14,7 @@ public class TokenPairDto {
     private String accessTokenId;
 
     private String refreshToken;
-    private LocalDateTime refreshTokenExpiration;
     private String hashedRefreshToken;
+
+    private LocalDateTime expiresAt;
 }

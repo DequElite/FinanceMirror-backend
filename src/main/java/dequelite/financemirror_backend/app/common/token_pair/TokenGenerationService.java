@@ -29,7 +29,7 @@ public class TokenGenerationService {
     @Value("${jwt.ttl.refresh}")
     private long refreshTokenTtl;
 
-    public TokenPairDto generateTokenPair(UserEntity user) {
+    public TokenPairDto generateTokenPair(UserEntity user, String sessionId) {
         String accessTokenId = UUID.randomUUID().toString();
         String accessToken = this.jwtService.generateToken(
                 user.getId().toString(),
@@ -42,7 +42,7 @@ public class TokenGenerationService {
         String refreshToken = this.jwtService.generateToken(
                 user.getId().toString(),
                 null,
-                null,
+                Map.of("sid", sessionId),
                 refreshTokenSecret,
                 refreshTokenTtl
         );
@@ -55,7 +55,7 @@ public class TokenGenerationService {
                 .refreshToken(refreshToken)
                 .accessTokenId(accessTokenId)
                 .hashedRefreshToken(hashedRefreshToken)
-                .refreshTokenExpiration(refreshTokenExpiration)
+                .expiresAt(refreshTokenExpiration)
                 .build();
     }
 }

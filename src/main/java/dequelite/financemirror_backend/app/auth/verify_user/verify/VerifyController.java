@@ -4,6 +4,7 @@ import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyReq
 import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyResponseDto;
 import dequelite.financemirror_backend.app.auth.verify_user.verify.dto.VerifyServiceResponseDto;
 import dequelite.financemirror_backend.app.common.response.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +38,11 @@ public class VerifyController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<VerifyResponseDto>> verify(
-            @Valid @RequestBody VerifyRequestDto body
+            @Valid @RequestBody VerifyRequestDto body,
+            HttpServletRequest request
             ) {
         VerifyServiceResponseDto responseDto =
-                this.service.verifyUser(body.getToken(), body.getCode());
+                this.service.verifyUser(body.getToken(), body.getCode(), request.getRemoteAddr(), request.getHeader("User-Agent"));
 
 
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", responseDto.getRefreshToken())
@@ -49,7 +51,7 @@ public class VerifyController {
                 .path("/")
                 .maxAge(Duration.between(
                         LocalDateTime.now(),
-                        responseDto.getRefreshTokenExpiration()
+                        responseDto.getExpiresAt()
                 ).getSeconds())
                 .sameSite(cookieSameSite)
                 .domain(cookieDomain.isBlank() ? null : cookieDomain)
@@ -59,7 +61,7 @@ public class VerifyController {
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .body(
                         ApiResponse.success(
-                                "Successfully verifyed",
+                                "Successfully verified",
                                 VerifyResponseDto.builder()
                                         .accessToken(responseDto.getAccessToken())
                                         .user(responseDto.getUser())

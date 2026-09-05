@@ -27,10 +27,10 @@ public class SessionEntity {
     @JsonBackReference
     private UserEntity user;
 
-    @Column(name = "refresh_token", nullable = false, unique = false, updatable = false)
+    @Column(name = "refresh_token", nullable = true, unique = false, updatable = true)
     private String refreshToken;
 
-    @Column(name = "access_token_id", nullable = true, unique = true, updatable = false)
+    @Column(name = "access_token_id", nullable = true, unique = true, updatable = true)
     private String accessTokenId;
 
     @Column(name = "expires_at", nullable = false, unique = false, updatable = false)

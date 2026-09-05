@@ -26,11 +26,10 @@ public class VerifyService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final TokenGenerationService tokenGenerationService;
     private final SessionService sessionService;
 
     @Transactional(noRollbackFor = ApiException.class)
-    public VerifyServiceResponseDto verifyUser(String token, String code) {
+    public VerifyServiceResponseDto verifyUser(String token, String code, String ipAddress, String userAgent) {
         VerificationEntity verification = this.verificationRepo
                 .findByToken(token)
                 .orElseThrow(() -> new ApiException(ErrorCode.VERIFICATION_INVALID));
@@ -41,16 +40,18 @@ public class VerifyService {
 
         UserEntity user = this.verifyUser(verification);
 
-        TokenPairDto tokenPairDto = this.tokenGenerationService.generateTokenPair(user);
-        this.sessionService.createSession(tokenPairDto, user);
+        this.sessionService.deleteExpiredSessions(user);
+
+        TokenPairDto tokenPairDto = this.sessionService.createSession(user, ipAddress, userAgent);
 
         return VerifyServiceResponseDto.builder()
                 .refreshToken(tokenPairDto.getRefreshToken())
                 .accessToken(tokenPairDto.getAccessToken())
-                .refreshTokenExpiration(tokenPairDto.getRefreshTokenExpiration())
+                .expiresAt(tokenPairDto.getExpiresAt())
                 .user(EntityMapper.toUserDto(user))
                 .build();
     }
+
 
     private void checkExpiration(LocalDateTime expiresAt, VerificationEntity verification){
         if (expiresAt.isBefore(LocalDateTime.now())) {
