@@ -33,7 +33,7 @@ public class SessionEntity {
     @Column(name = "access_token_id", nullable = true, unique = true, updatable = true)
     private String accessTokenId;
 
-    @Column(name = "expires_at", nullable = false, unique = false, updatable = false)
+    @Column(name = "expires_at", nullable = true, unique = false, updatable = true)
     private LocalDateTime expiresAt;
 
     @CreationTimestamp

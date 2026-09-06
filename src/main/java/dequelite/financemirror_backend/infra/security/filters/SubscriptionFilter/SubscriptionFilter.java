@@ -30,7 +30,13 @@ public class SubscriptionFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        return path.startsWith("/auth") || path.startsWith("/profile/payment");
+        log.info("SubscriptionFilter shouldNotFilter: {}", path);
+
+        return (path.startsWith("/auth") && !path.startsWith("/auth/session"))
+                || path.startsWith("/profile/payment")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/webjars");
     }
 
     @Override
@@ -41,7 +47,7 @@ public class SubscriptionFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String path = request.getServletPath();
-        boolean isNonSubscriptionPlace = path.startsWith("/graphql");
+        boolean isNonSubscriptionPlace = path.startsWith("/graphql") || path.startsWith("/auth/session");
 
         log.info("SubscriptionFilter: checking request {}", request.getRequestURI());
 

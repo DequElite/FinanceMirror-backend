@@ -49,6 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/webjars/**").permitAll()
 
                         .requestMatchers("/graphql").authenticated()
+                        .requestMatchers("/auth/session/**").authenticated()
 
                         .anyRequest().authenticated()
                 )

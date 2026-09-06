@@ -31,7 +31,14 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.startsWith("/auth/") || path.startsWith("/profile/payment/paddle/webhook");
+
+        log.info("AuthFilter shouldNotFilter: {}", path);
+
+        return (path.startsWith("/auth") && !path.startsWith("/auth/session"))
+                || path.startsWith("/profile/payment")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/webjars");
     }
 
     @Override
