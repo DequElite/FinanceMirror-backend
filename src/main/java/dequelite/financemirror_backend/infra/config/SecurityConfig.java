@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/session/refresh-token").permitAll()
                         .requestMatchers("/profile/payment/paddle/webhook").permitAll()
                         .requestMatchers("/graphiql/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()

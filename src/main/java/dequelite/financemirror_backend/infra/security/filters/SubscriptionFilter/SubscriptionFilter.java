@@ -33,6 +33,7 @@ public class SubscriptionFilter extends OncePerRequestFilter {
         log.info("SubscriptionFilter shouldNotFilter: {}", path);
 
         return (path.startsWith("/auth") && !path.startsWith("/auth/session"))
+                || path.equals("/auth/session/refresh-token")
                 || path.startsWith("/profile/payment")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")

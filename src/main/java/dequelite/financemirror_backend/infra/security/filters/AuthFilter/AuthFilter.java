@@ -35,6 +35,7 @@ public class AuthFilter extends OncePerRequestFilter {
         log.info("AuthFilter shouldNotFilter: {}", path);
 
         return (path.startsWith("/auth") && !path.startsWith("/auth/session"))
+                || path.equals("/auth/session/refresh-token")
                 || path.startsWith("/profile/payment")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")
@@ -101,10 +102,12 @@ public class AuthFilter extends OncePerRequestFilter {
             );
 
         } catch (Exception e) {
-
             log.error("FILTER ERROR", e);
-
             SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Unauthorized\"}");
+            return;
         }
 
         log.info("=== FILTER END ===");
