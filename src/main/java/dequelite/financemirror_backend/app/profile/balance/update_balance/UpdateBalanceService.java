@@ -30,7 +30,8 @@ public class UpdateBalanceService {
         }
 
         ProfileEntity profile = foundProfile.get();
-        profile.setBalance(profile.getBalance() + body.getAmount());
+
+        profileRepository.incrementBalance(profile.getId(), body.getAmount());
 
         ReplenishmentEntity newReplenishment = ReplenishmentEntity.builder()
                 .profile(profile)
@@ -41,7 +42,6 @@ public class UpdateBalanceService {
                 .build();
 
         replenishmentRepo.save(newReplenishment);
-        profileRepository.save(profile);
 
         autoReportService.createAutoReport(userId);
     }

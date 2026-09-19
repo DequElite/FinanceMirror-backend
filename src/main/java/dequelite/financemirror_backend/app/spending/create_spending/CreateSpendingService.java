@@ -34,7 +34,7 @@ public class CreateSpendingService {
             TokenHeaderDTO user
     ) {
         log.info("SERVICE createSpending --START: {}", user);
-        Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(UUID.fromString(user.getSub()));
+        Optional<ProfileEntity> profile = this.profileRepository.findProfileByUserIdForCreateSpending(UUID.fromString(user.getSub()));
         if(profile.isEmpty()) {
             throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }
