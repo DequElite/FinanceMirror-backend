@@ -28,7 +28,7 @@ public class AutoReportService {
         ReportEntity newReport = ReportEntity.builder()
                 .profile(analyzedDto.getProfile())
                 .type(ReportTypeEnum.AUTO)
-                .weeklySpending(analyzedDto.getTotalSpent())
+                .totalSpent(analyzedDto.getTotalSpent())
                 .expensive_category(analyzedDto.getExpensiveCategory())
                 .spentPercentOfSalary(analyzedDto.getSpentPercentOfSalary())
                 .averageDailySpending(analyzedDto.getAverageDailySpending())

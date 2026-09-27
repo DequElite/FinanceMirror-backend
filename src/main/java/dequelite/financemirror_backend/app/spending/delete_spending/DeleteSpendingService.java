@@ -30,7 +30,7 @@ public class DeleteSpendingService {
             UUID userId,
             UUID spendingId
     ) {
-        Optional<ProfileEntity> profile = this.profileRepository.findByUser_Id(userId);
+        Optional<ProfileEntity> profile = this.profileRepository.findProfileByUserIdForCreateSpending(userId);
         if(profile.isEmpty()) {
             throw new ApiException(ErrorCode.USER_NOT_FOUND);
         }

@@ -46,7 +46,7 @@ public class ReportService {
         ReportEntity newReport = ReportEntity.builder()
                 .profile(analyzedDto.getProfile())
                 .type(ReportTypeEnum.AI)
-                .weeklySpending(analyzedDto.getTotalSpent())
+                .totalSpent(analyzedDto.getTotalSpent())
                 .expensive_category(analyzedDto.getExpensiveCategory())
                 .spentPercentOfSalary(analyzedDto.getSpentPercentOfSalary())
                 .averageDailySpending(analyzedDto.getAverageDailySpending())

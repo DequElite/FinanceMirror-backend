@@ -32,8 +32,8 @@ public class ReportEntity {
     @Enumerated(EnumType.STRING)
     private ReportTypeEnum type;
 
-    @Column(name = "weekly_spending", unique = false, nullable = false, updatable = false)
-    private Integer weeklySpending;
+    @Column(name = "total_spent", unique = false, nullable = false, updatable = false)
+    private Integer totalSpent;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "expensive_category", unique = false, nullable = false, updatable = false)

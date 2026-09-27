@@ -13,6 +13,8 @@ import dequelite.financemirror_backend.domain.spending.SpendingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -26,6 +28,7 @@ public class AnalyzeUserService {
     private final SpendingRepository spendingRepository;
     private final ReplenishmentRepo replenishmentRepo;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public Optional<AnalyzedDto> analyze(UUID userId){
         ProfileEntity profile = this.profileRepository
                 .findByUser_Id(userId)
