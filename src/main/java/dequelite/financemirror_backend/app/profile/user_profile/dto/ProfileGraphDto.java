@@ -26,8 +26,6 @@ public class ProfileGraphDto {
 
     private List<SpendingDto> spendings;
 
-    private List<ReportDto> reports;
-
     private List<ReplenishmentDto> replenishment;
 
     private SubscriptionDto subscription;

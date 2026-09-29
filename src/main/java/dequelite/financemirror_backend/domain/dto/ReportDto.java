@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ReportDto {
     private UUID id;
     private ReportTypeEnum type;
-    private Integer weeklySpending;
+    private Integer totalSpent;
     private Integer spentPercentOfSalary;
     private Integer averageDailySpending;
     private Integer dailyLimit;

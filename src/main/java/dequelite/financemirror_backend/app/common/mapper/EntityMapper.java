@@ -1,6 +1,7 @@
 package dequelite.financemirror_backend.app.common.mapper;
 
 import dequelite.financemirror_backend.domain.dto.*;
+import dequelite.financemirror_backend.domain.history_report.HistoryReportEntity;
 import dequelite.financemirror_backend.domain.profile.ProfileEntity;
 import dequelite.financemirror_backend.domain.replenishment.ReplenishmentEntity;
 import dequelite.financemirror_backend.domain.report.ReportEntity;
@@ -112,7 +113,7 @@ public class EntityMapper {
         return ReportDto.builder()
                 .id(report.getId())
                 .type(report.getType())
-                .weeklySpending(report.getWeeklySpending())
+                .totalSpent(report.getTotalSpent())
                 .spentPercentOfSalary(report.getSpentPercentOfSalary())
                 .averageDailySpending(report.getAverageDailySpending())
                 .dailyLimit(report.getDailyLimit())
@@ -125,4 +126,29 @@ public class EntityMapper {
                 .created_at(report.getCreatedAt())
                 .build();
     }
+
+    public static HistoryReportDto toHistoryReportDto(HistoryReportEntity report) {
+        if (report == null) {
+            return null;
+        }
+
+        return HistoryReportDto.builder()
+                .id(report.getId())
+                .createdAt(report.getCreatedAt())
+                .updatedAt(report.getUpdatedAt())
+                .periodStartDate(report.getPeriodStartDate())
+                .periodEndDate(report.getPeriodEndDate())
+                .totalSpent(report.getTotalSpent())
+                .currentBalance(report.getCurrentBalance())
+                .totalReplenishments(report.getTotalReplenishments())
+                .averageDailySpending(report.getAverageDailySpending())
+                .spentDifference(report.getSpentDifference())
+                .spentDifferencePercent(report.getSpentDifferencePercent())
+                .replenishedDifference(report.getReplenishedDifference())
+                .replenishedDifferencePercent(report.getReplenishedDifferencePercent())
+                .balanceDifference(report.getBalanceDifference())
+                .balanceDifferencePercent(report.getBalanceDifferencePercent())
+                .averageDailySpendingDifference(report.getAverageDailySpendingDifference())
+                .averageDailySpendingDifferencePercent(report.getAverageDailySpendingDifferencePercent())
+                .build();
 }

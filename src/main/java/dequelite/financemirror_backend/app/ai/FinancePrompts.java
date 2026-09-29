@@ -7,7 +7,7 @@ public class FinancePrompts {
             String currency,
             String salary,
             String balance,
-            String weeklySpending,
+            String totalSpent,
             String spentPercentOfSalary,
             String averageDailySpending,
             String dailyLimit,
@@ -34,7 +34,7 @@ public class FinancePrompts {
                 - Валюта: %s
                 - Месячная зарплата: %s
                 - Текущий баланс: %s
-                - Потрачено за неделю: %s
+                - Потрачено за месяц: %s
                 - Процент от зарплаты: %s
                 - Средние траты в день: %s
                 - Дневной лимит: %s
@@ -102,7 +102,7 @@ public class FinancePrompts {
                 currency,
                 salary,
                 balance,
-                weeklySpending,
+                totalSpent,
                 spentPercentOfSalary,
                 averageDailySpending,
                 dailyLimit,
@@ -120,7 +120,7 @@ public class FinancePrompts {
             String currency,
             String salary,
             String balance,
-            String weeklySpending,
+            String totalSpent,
             String spentPercentOfSalary,
             String averageDailySpending,
             String dailyLimit,
@@ -153,7 +153,7 @@ public class FinancePrompts {
                 - Валюта: %s
                 - Месячная зарплата: %s
                 - Текущий баланс: %s
-                - Потрачено за неделю: %s
+                - Потрачено за месяц: %s
                 - Процент от зарплаты: %s
                 - Средние траты в день: %s
                 - Дневной лимит: %s
@@ -191,7 +191,7 @@ public class FinancePrompts {
                         currency,
                         salary,
                         balance,
-                        weeklySpending,
+                        totalSpent,
                         spentPercentOfSalary,
                         averageDailySpending,
                         dailyLimit,

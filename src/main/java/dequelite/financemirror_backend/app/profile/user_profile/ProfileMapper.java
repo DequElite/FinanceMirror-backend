@@ -19,19 +19,17 @@ import java.util.List;
 public class ProfileMapper {
 
     public ProfileGraphDto toDto(ProfileEntity profile) {
-        ProfileGraphDto dto = ProfileGraphDto.builder()
+
+        return ProfileGraphDto.builder()
                 .id(profile.getId())
                 .email(profile.getUser().getEmail())
                 .balance(profile.getBalance())
                 .monthSalary(profile.getMonthSalary())
                 .currency(profile.getCurrency())
                 .spendings(mapSpendings(profile.getSpendings()))
-                .reports(mapReports(profile.getReports()))
                 .replenishment(mapReplenishments(profile.getReplenishments()))
                 .subscription(EntityMapper.toSubscriptionDto(profile.getUser().getSubscription()))
                 .build();
-
-        return dto;
     }
 
     private static List<ReplenishmentDto> mapReplenishments(List<ReplenishmentEntity> replenishments) {
@@ -43,12 +41,6 @@ public class ProfileMapper {
     private static List<SpendingDto> mapSpendings(List<SpendingEntity> spendings) {
         return spendings.stream()
                 .map(EntityMapper::toSpendingDto)
-                .toList();
-    }
-
-    private static List<ReportDto> mapReports(List<ReportEntity> reports) {
-        return reports.stream()
-                .map(EntityMapper::toReportDto)
                 .toList();
     }
 }

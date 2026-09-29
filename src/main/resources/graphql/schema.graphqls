@@ -17,7 +17,7 @@ type Replenishment {
 type Report {
     id: ID
     type: String
-    weeklySpending: Int
+    totalSpent: Int
     expensiveCategory: String
     spentPercentOfSalary: Int
     averageDailySpending: Int
@@ -41,6 +41,32 @@ type Subscription {
     expires_at: String
 }
 
+type HistoryReport {
+    id: String
+    createdAt: String
+    updatedAt: String
+
+    periodStartDate: String
+    periodEndDate: String
+
+    totalSpent: Int
+    currentBalance: Int
+    totalReplenishments: Int
+    averageDailySpending: Int
+
+    spentDifference: Int
+    spentDifferencePercent: Int
+
+    replenishedDifference: Int
+    replenishedDifferencePercent: Int
+
+    balanceDifference: Int
+    balanceDifferencePercent: Int
+
+    averageDailySpendingDifference: Int
+    averageDailySpendingDifferencePercent: Int
+}
+
 type Profile {
     id: ID
     email: String
@@ -48,14 +74,16 @@ type Profile {
     monthSalary: Int
     currency: String
     spendings: [Spending]
-    reports: [Report]
     replenishment: [Replenishment]
     subscription: Subscription
 }
 
+
 type Dashboard {
     latest_report: Report
     left_until_payday: Int
+    reports: [Report]
+    history_reports: [HistoryReport]
 }
 
 type Query {
