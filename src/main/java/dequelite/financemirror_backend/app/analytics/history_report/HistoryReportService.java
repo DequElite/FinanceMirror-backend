@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -191,10 +192,13 @@ public class HistoryReportService {
                 reportEndDate
         );
 
+        LocalDateTime start = reportStartDate.atStartOfDay();
+        LocalDateTime endExclusive = reportEndDate.plusDays(1).atStartOfDay();
+
         ReportEntity latestReport = this.reportRepository.findLatestReportByPeriod(
                         profile.getId(),
-                        reportStartDate,
-                        reportEndDate
+                        start,
+                        endExclusive
                 )
                 .orElseThrow(() -> new ApiException(ErrorCode.INVALID_CREDENTIALS));
 

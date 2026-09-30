@@ -21,7 +21,7 @@ public interface ProfileRepository extends JpaRepository<ProfileEntity, UUID> {
          FROM ProfileEntity p
          WHERE p.user.id = :userId
      """)
-     Optional<ProfileEntity> findProfileByUserIdForCreateSpending(UUID userId);
+     Optional<ProfileEntity> findProfileByUserIdForCreateSpending(@Param("userId") UUID userId);
 
      @Modifying
      @Query("""

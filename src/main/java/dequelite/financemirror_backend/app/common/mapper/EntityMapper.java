@@ -151,4 +151,6 @@ public class EntityMapper {
                 .averageDailySpendingDifference(report.getAverageDailySpendingDifference())
                 .averageDailySpendingDifferencePercent(report.getAverageDailySpendingDifferencePercent())
                 .build();
+
+    }
 }

@@ -86,6 +86,7 @@ public class AnalyzeUserService {
     }
 
     private int dailyLimit(long daysUntilEndOfMonth, int balance) {
+        if (daysUntilEndOfMonth == 0) return 0;
         return (int) (balance / daysUntilEndOfMonth);
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,9 +16,12 @@ public interface HistoryReportRepo extends JpaRepository<HistoryReportEntity, UU
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("""
         SELECT h
-        FROM HistoryReport h
+        FROM HistoryReportEntity h
         WHERE h.profile.id = :profileId
           AND h.periodStartDate = :periodStart
     """)
-    Optional<HistoryReportEntity> findByProfileIdAndPeriodStartDate(UUID profileId, LocalDate periodStartDate);
+    Optional<HistoryReportEntity> findByProfileIdAndPeriodStartDate(
+            @Param("profileId") UUID profileId,
+            @Param("periodStart") LocalDate periodStartDate
+    );
 }
